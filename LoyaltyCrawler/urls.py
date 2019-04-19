@@ -23,7 +23,7 @@ urlpatterns = [
 # Refer here for code additions below:
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/skeleton_website#Registering_the_catalog_application
 
-# Use include() to add paths from the catalog application
+# Use include() to add paths from the webapp application
 from django.urls import include
 from django.urls import path
 

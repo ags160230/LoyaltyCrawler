@@ -1,25 +1,25 @@
 from django.db import models
+from django.utils import timezone
 
 
 # This manager retrieves artifacts belonging to a particular session
 class ArchiveManager(models.Manager):
-    # returns artifacts belonging to a particular session
-    @staticmethod
-    def get_session(s_id):
-        return Artifacts.objects.filter(session_id=s_id)
-
-    # i.e. get_session
-    # def get_queryset(self, s_id):
-    #    return super().get_queryset().filter(session_id=s_id)
-
-
-# This manager stores artifacts belonging to a particular session
-class SessionManager(models.Manager):
     # creates an artifact (a tale record) belonging to a particular session
     @staticmethod
     def create_artifact(s_id, a_url):
-        session = Artifacts(session_id=s_id, artifact_url=a_url)
-        session.save()
+        artifact = Artifacts(session_id=s_id, artifact_url=a_url, retrieval_date=timezone.now())
+        artifact.save()
+
+    # returns particular artifact via id
+    @staticmethod
+    def get_artifact(a_id):
+        return Artifacts.objects.get(artifact_id=a_id)
+
+    # returns artifacts belonging to a particular session
+    # use session[i] to refer to artifact i
+    @staticmethod
+    def get_session(s_id):
+        return Artifacts.objects.filter(session_id=s_id)
 
 
 # This manager deletes a session
@@ -37,4 +37,33 @@ class Artifacts(models.Model):
     retrieval_date = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
-    # particular_session_artifacts = ArchiveManager()
+
+    def __str__(self):
+        return self.artifact_url
+
+
+# This manager deletes criteria from the search criteria list
+class CriteriaManager(models.Manager):
+    # deletes a criterion for search criteria list
+    @staticmethod
+    def create_criterion(c):
+        criterion = SearchCriteria(criterion=c)
+        criterion.save()
+
+    # returns search criteria list
+    @staticmethod
+    def get_criteria():
+        return SearchCriteria.objects.all()
+
+    # deletes a criterion from search criteria list
+    @staticmethod
+    def delete_criterion(c_id):
+        SearchCriteria.objects.filter(criterion_id=c_id).delete()
+
+
+class SearchCriteria(models.Model):
+    criterion_id = models.AutoField(primary_key=True)
+    criterion = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.criterion
