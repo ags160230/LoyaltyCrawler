@@ -1,0 +1,312 @@
+.clearfix {
+  overflow: auto;
+}
+
+body {
+  background-color: #6c757d;
+  font-family: Arial, Helvetica, san-serif;
+}
+
+/* Views */
+.ui-box{
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 10px 20px rgba(0,0,0,0.19);
+  border-radius: 15px;
+  z-index: 0;
+  height: calc(100vh - 40px);
+  margin: 2em;
+  padding: 2em;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.ui-box-keywords{
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 10px 20px rgba(0,0,0,0.19);
+  border-radius: 15px;
+  z-index: 0;
+  /*height: calc(100vh - 40px);*/
+  height: 40px;
+  margin: 2em;
+  padding: 2em;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* ============================================================================ */
+/* The left sidebar menu */
+.left-sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 220px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-image: linear-gradient(135deg,#8f75da 0,#727cf5 60%);
+  color: #fff;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+/* For logo in left side bar */
+.logo {
+  display: block;
+  line-height: 80px;
+}
+/* Aligns text to the center */
+.text-center {
+  text-align: center!important;
+}
+/* The sidebar navigation menu title*/
+.left-sidenav h2 {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  /*color: #818181;*/
+}
+
+.left-sidenav li {
+  text-decoration: none;
+  color: #cedce4;
+}
+
+/* The navigation menu links */
+.left-sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 1.2em;
+  color: #cedce4;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.left-sidenav a:hover {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .left-sidenav {padding-top: 15px;}
+  .left-sidenav a {font-size: 18px;}
+}
+
+/* File Tree Structure */
+/* Remove default bullets */
+ul, #myULleft, #myULright {
+  list-style-type: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#myULleft, #myULright {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+  display: none;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+  /*transition: all 0.3s ease-in-out 0s;*/
+}
+
+.left-sidenav ul li {
+  text-decoration: none;
+  /*color: #818181;*/
+}
+
+/* The navigation menu links */
+.left-sidenav ul a {
+  padding: 0px 1px 0px 2px;
+  text-decoration: none;
+  font-size: 1em;
+  /*color: #818181;*/
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.left-sidenav ul a:hover,span:hover {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+/* ============================================================================ */
+/* Middle of the page */
+.main-content {
+  margin-left: 250px;
+  margin-right: 250px;
+  overflow: hidden;
+  padding:5px 5px;
+}
+
+.content-page {
+  overflow: hidden;
+  padding:5px 5px;
+  min-height: 80vh;
+}
+
+.content-page-keywords {
+  overflow: hidden;
+  padding:5px 5px;
+  min-height: 40vh;
+}
+
+.subcontent-header {
+  padding: 10px;
+}
+
+.navbar-custom {
+  padding: 0 30px;
+  background-color: #f1ebeb;
+  webkit-box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.query-search-bar {
+  margin: 10px 0px 10px 0px;
+}
+
+/* ============================================================================ */
+/* Session View Structure */
+/* The right sidebar */
+.right-sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 220px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  right: 0;
+  background-image: linear-gradient(135deg,#8f75da 0,#727cf5 60%);
+  color: #fff;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+/* The sidebar navigation menu title*/
+.right-sidenav h2 {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.right-sidenav h5 {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  color: #cedce4;
+}
+
+.right-sidenav h6 {
+  padding: 0px 8px 0px 16px;
+  text-decoration: none;
+  color: #cedce4;
+}
+
+.session-button {
+  margin: 6px 8px 6px 16px;
+  background-color: #26a69a;
+  color: #fff;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.session-button:hover {
+  background-color: #32cdbf;
+  color: white;
+}
+
+.right-sidenav li {
+  text-decoration: none;
+  color: #cedce4;
+}
+
+/* The navigation menu links */
+.right-sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 1.2em;
+  color: #cedce4;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.right-sidenav a:hover {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .right-sidenav {padding-top: 15px;}
+  .right-sidenav a {font-size: 18px;}
+}
+
+.right-sidenav ul li {
+  text-decoration: none;
+  color: #cedce4;
+}
+
+/* The navigation menu links */
+.right-sidenav ul a {
+  padding: 0px 1px 0px 2px;
+  text-decoration: none;
+  font-size: 1em;
+  color: #cedce4;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.right-sidenav ul a:hover,span:hover {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+/* Select Pop Up  */
+.select-dropdown-element {
+  margin: 6px 8px 6px 16px;
+}
+
+.select-dropdown-element select {
+  border-radius: 4px;
+  padding: 2px 4px 2px 8px;
+}
+
+.select-dropdown {
+  color: #fff;
+}
+
+.caret > path:nth-child(1) {
+  fill: #fff;
+}
+
+.info-box {
+  border-radius: 4px;
+  padding: 5px;
+  margin: 15px 15px 15px 15px;
+  position: relative;
+  background-color: #7e87f6;
+}
+
+.info-box h6 {
+  font-size: 0.9em;
+}

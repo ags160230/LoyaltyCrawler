@@ -1,8 +1,9 @@
 from django.urls import path
+from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', TemplateView.as_view(template_name='homepage.html')),
     path('session/<int:session_id>/', views.get_session, name='get_session'),
     path('artifact/<int:artifact_id>/', views.view_artifact, name='view_artifact'),
     path('criteria', views.get_search_criteria, name='get_search_criteria'),

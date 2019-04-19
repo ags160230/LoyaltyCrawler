@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404
 from .models import Artifacts, ArchiveManager, UpdateManager, SearchCriteria, CriteriaManager
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
+from django.http import JsonResponse
 import urllib #check urllib2
 import os
 
@@ -26,6 +27,15 @@ def view_artifact(request, artifact_id):
     except Artifacts.DoesNotExist:
         raise Http404("Session does not exit")
 
+@require_http_methods(["GET", "POST"])
+def view_artifact_info(request, artifact_id):
+    try:
+        artifact = ArchiveManager.get_artifact(artifact_id)
+        webpage = artifact.artifact_url
+        # remove "https://" when real urls are stored
+            return redirect("https://" + webpage)
+
+
 
 # Page that returns artifacts of a particular session
 @require_http_methods(["GET", "POST"])
@@ -35,9 +45,12 @@ def get_session(request, session_id):
         output = ',\n'.join([a.artifact_url for a in artifact_list])
     except Artifacts.DoesNotExist:
         raise Http404("Session does not exit")
-
-    return HttpResponse(output)
-
+    dictionary = {}
+    link_num = 0
+    for a in artifact_list:
+        dictionary[link_num] = a.artifact_url
+        link_num+=1
+    return JsonResponse(dictionary)
 
 # Page that returns search criteria list
 @require_http_methods(["GET", "POST"])
