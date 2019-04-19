@@ -24,6 +24,10 @@ def move_file(src, dst):
     except FileExistsError:
         # display error message
         return False
+		
+#Joe's functions
+#rename_file
+#delete_file
 
 	
 	
