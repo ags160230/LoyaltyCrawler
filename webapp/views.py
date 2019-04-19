@@ -133,13 +133,3 @@ def save_artifact_to_file(filename, artifact_url):
         return False
 
 
-# Function to create a local file reserve directory
-def create_directory(directory_name):
-    try:
-        os.mkdir(directory_name)
-        return True
-    except FileExistsError:
-        # display error message
-        return False
-
-
