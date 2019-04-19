@@ -1,5 +1,11 @@
-import shutil
 import os
+import shutil
+
+# link describing os functions
+# https://docs.python.org/2/library/os.html
+
+# link describing shutil functions used below
+#https://docs.python.org/2/library/shutil.html
 
 # Function to create a directory
 def create_directory(directory_name):
@@ -11,28 +17,29 @@ def create_directory(directory_name):
         return False
 
 # Function to copy a directory to a destination location
-def copy_directory(source, dest):
+def copy_directory(src, dst):
    try:
-       shutil.copytree(src, dst, symlinks=False, ignore=None)
+       shutil.copytree(src, dst, symlinks=True, ignore=None)
        return True
-   except
-        # display error message
-       return False
-
-# Function to move a directory to a destination location  
-def move_directory(source, dest):
-   try:
-       shutil.copytree(src, dst, symlinks=False, ignore=None)
-       return True
-   except
+   except OSError:
         # display error message
        return False
 
 # Function to delete a directory
-def delete_directory(source):
+def delete_directory(path):
    try:
-       shutil.copytree(src, dst, symlinks=False, ignore=None)
+       shutil.rmtree(path)
        return True
-   except
+   except OSError:
         # display error message
        return False
+	   
+# Function to move a directory to a destination location  
+def move_directory(src, dest):
+   try:
+       move(src, dst)
+       return True
+   except OSError:
+        # display error message
+       return False
+
