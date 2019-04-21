@@ -33,8 +33,9 @@ def view_artifact_info(request, artifact_id):
         artifact = ArchiveManager.get_artifact(artifact_id)
         webpage = artifact.artifact_url
         # remove "https://" when real urls are stored
-            return redirect("https://" + webpage)
-
+        return redirect("https://" + webpage)
+    except Artifacts.DoesNotExist:
+        raise Http404("Session does not exit")
 
 
 # Page that returns artifacts of a particular session
