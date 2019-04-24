@@ -4,7 +4,8 @@ from .models import Artifacts, ArchiveManager, SearchCriteria, CriteriaManager
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
 from urllib.request import urlopen
-import os
+import os, shutil
+from .crawler import crawler # use this import to call scrapy methods
 
 # Variable to record number of sessions created & value to increment for new session id
 session_index = 0
@@ -26,7 +27,7 @@ def view_artifact(request, artifact_id):
         return redirect("https://" + webpage)
 
     except Artifacts.DoesNotExist:
-        raise Http404("Session does not exit")
+        raise Http404("Website does not exit")
 
 
 """
@@ -145,7 +146,52 @@ def save_artifact_to_file(filename, artifact_url):
         f.write(web_content)
         f.close()
 
-        return True
     except IOError:
         # display error message
         return False
+    else:
+        return True
+
+
+def copy_file(source, dest):
+    """
+    Copy a file from source to dest. source and dest
+    must be file-like objects, i.e. any object with a read or
+    write method, like for example StringIO.
+    """
+    shutil.copy2(source, dest)
+
+
+def move_file(source, dest):
+    """
+    Move a file from source to dest. source and dest
+    must be file-like objects, i.e. any object with a read or
+    write method, like for example StringIO.
+    """
+    shutil.move(source, dest)
+
+
+# Function to create a directory for the user's file reserve
+def create_folder(folder_name):
+    try:
+        path = os.getcwd() + "/" + folder_name
+        os.mkdir(path)
+
+    except OSError:
+        # display error message
+        return False
+    else:
+        return True
+
+
+# Function to delete a directory from the user's file reserve
+def delete_folder(folder_name):
+    try:
+        path = os.getcwd() + "/" + folder_name
+        os.rmdir(path)
+
+    except OSError:
+        # display error message
+        return False
+    else:
+        return True
