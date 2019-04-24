@@ -4,7 +4,7 @@ import sys
 # Refactored actions that are common between test cases
 
 # Create a text file called t.txt, inside the folder that initiated this python session, nested inside a folder called /tmp
-# Return a string path to a second directory, in the folder that initiated this python session, nexted inside a folder called /tmp2
+# Return a string path to a second directory, in the folder that initiated this python session, called /tmp2
 def create_t_txt_in_tmp_dir():
     system_paths = sys.path
     # item at index 1 in system_paths is the folder that initiated the python interpreter
@@ -34,7 +34,7 @@ def create_t_txt_in_tmp_dir():
     return_list = [source_file, destination_dir]
     return return_list
    
-# Remove both nested temp folders, tmp and tmp2
+# Remove both temp folders, tmp and tmp2
 def delete_temp_dirs():
     system_paths = sys.path
     # item at index 1 in system_paths is the folder that initiated the python interpreter

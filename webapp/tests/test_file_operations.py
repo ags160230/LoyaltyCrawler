@@ -1,9 +1,6 @@
 from django.test import TestCase
 from file_operations import *
-from refactored_test_methods import *
-import os
-import shutil
-import sys
+from tests.refactored_test_methods import *
 
 # Start of Test Cases
 
@@ -17,7 +14,7 @@ def test_move():
     returned_list = create_t_txt_in_tmp_dir()
     source = returned_list[0]
     destination = returned_list[1]
-    shutil.move(source, destination)
+    move_file(source, destination)
     delete_temp_dirs()
 
 def test_copy():
