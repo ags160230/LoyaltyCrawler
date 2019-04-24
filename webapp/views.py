@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404
 from .models import Artifacts, ArchiveManager, SearchCriteria, CriteriaManager
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
-from django.http import JsonResponse
-import urllib #check urllib2
+from urllib.request import urlopen
 import os
 
 # Variable to record number of sessions created & value to increment for new session id
@@ -85,7 +84,7 @@ def get_search_criteria(request):
 # Page that allows user to edit search criteria list & returns updated search criteria list
 @require_http_methods(["GET", "POST"])
 def edit_search_criteria(request):
-    criteria_list = CriteriaManager.get_criteria()
+    # criteria_list = CriteriaManager.get_criteria()
 
     # GUI interaction to create criterion or delete criterion
     # user selects option to add or delete criterion | i.e True = add, False = delete
@@ -138,7 +137,7 @@ def save_artifact_to_file(filename, artifact_url):
     try:
         # extract HTML file via url
         url = artifact_url
-        response = urllib.urlopen(url)  # change to urllib2
+        response = urlopen(url)  # change to urllib2
         web_content = response.read()
 
         # write webpage content to file & save
@@ -150,5 +149,3 @@ def save_artifact_to_file(filename, artifact_url):
     except IOError:
         # display error message
         return False
-
-
