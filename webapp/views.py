@@ -110,24 +110,23 @@ def edit_search_criteria(request):
 
 # Function to start a session, receive artifact url list from scrapy, and store the url's in the DB
 def execute_session(search_criteria):
-    session_id = session_index + 1
 
-    # start session (i.e. use scrapy library to start web scraping/parsing utilizing search_criteria)
+    # user selects search criterion to use
+    try:
+        os.system("scrapy runspider crawler.py")
+    except OSError:
+        # display error message
+        return False
+    else:
+        return True
 
+    """
     artifact_list = ["url_1", "url_2", "url_3"]     # list of urls returned by scrapy
 
     # use manager to save artifacts in DB
     for a in artifact_list:
         ArchiveManager.create_artifact(session_id, a)
-
-    # variable to return session execution status | True = success, False = failure
-    # replace with try/except later
-    execution_code = True
-
-    if execution_code:
-        return True
-    else:
-        return False
+    """
 
 
 # Function to save artifact HTML file to local file reserve directory

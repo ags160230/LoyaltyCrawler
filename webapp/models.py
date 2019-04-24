@@ -26,6 +26,11 @@ class ArchiveManager(models.Manager):
     def delete_session(s_id):
         Artifacts.objects.filter(session_id=s_id).delete()
 
+    # returns the latest session number
+    @staticmethod
+    def get_last_session_id():
+        return Artifacts.objects.all().last().session_id
+
 
 class Artifacts(models.Model):
     session_id = models.IntegerField()
