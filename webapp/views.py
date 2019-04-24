@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from .models import Artifacts, ArchiveManager, UpdateManager, SearchCriteria, CriteriaManager
+from .models import Artifacts, ArchiveManager, SearchCriteria, CriteriaManager
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
 from django.http import JsonResponse
@@ -22,19 +22,23 @@ def view_artifact(request, artifact_id):
     try:
         artifact = ArchiveManager.get_artifact(artifact_id)
         webpage = artifact.artifact_url
+
         # remove "https://" when real urls are stored
         return redirect("https://" + webpage)
+
     except Artifacts.DoesNotExist:
         raise Http404("Session does not exit")
 
+
+"""
 @require_http_methods(["GET", "POST"])
 def view_artifact_info(request, artifact_id):
     try:
         artifact = ArchiveManager.get_artifact(artifact_id)
         webpage = artifact.artifact_url
         # remove "https://" when real urls are stored
-            return redirect("https://" + webpage)
-
+        return redirect("https://" + webpage)
+"""
 
 
 # Page that returns artifacts of a particular session
@@ -42,26 +46,37 @@ def view_artifact_info(request, artifact_id):
 def get_session(request, session_id):
     try:
         artifact_list = ArchiveManager.get_session(session_id)
-        output = ',\n'.join([a.artifact_url for a in artifact_list])
+        # output = ',\n'.join([a.artifact_url for a in artifact_list])
+        output = {}
+        i = 0
+
+        for a in artifact_list:
+            output[i] = a.artifact_url
+            i += 1
+
+        return JsonResponse(output)
+
     except Artifacts.DoesNotExist:
         raise Http404("Session does not exit")
-    dictionary = {}
-    link_num = 0
-    for a in artifact_list:
-        dictionary[link_num] = a.artifact_url
-        link_num+=1
-    return JsonResponse(dictionary)
+
 
 # Page that returns search criteria list
 @require_http_methods(["GET", "POST"])
 def get_search_criteria(request):
     try:
         criteria_list = CriteriaManager.get_criteria()
-        output = ',\n'.join([c.criterion for c in criteria_list])
+        # output = ',\n'.join([c.criterion for c in criteria_list])
+        output = {}
+        i = 0
+
+        for a in criteria_list:
+            output[i] = a.artifact_url
+            i += 1
+
+        return JsonResponse(output)
+
     except SearchCriteria.DoesNotExist:
         raise Http404("Search Criteria does not exit")
-
-    return HttpResponse(output)
 
 
 # Page that allows user to edit search criteria list & returns updated search criteria list
@@ -83,10 +98,11 @@ def edit_search_criteria(request):
             # user selects criterion to delete | example criterion_id = 1 = criterion_list[0]
             criterion_id = 0
             CriteriaManager.delete_criterion(criterion_id)
+
+        return get_search_criteria(request)
+
     except SearchCriteria.DoesNotExist:
         raise Http404("Search Criteria does not exit")
-
-    return get_search_criteria(request)
 
 
 # Function to start a session, receive artifact url list from scrapy, and store the url's in the DB

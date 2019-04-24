@@ -21,9 +21,6 @@ class ArchiveManager(models.Manager):
     def get_session(s_id):
         return Artifacts.objects.filter(session_id=s_id)
 
-
-# This manager deletes a session
-class UpdateManager(models.Manager):
     # deletes all artifacts of a session
     @staticmethod
     def delete_session(s_id):
