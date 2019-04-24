@@ -16,8 +16,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LoyaltyCrawler/settings.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="287">
               <caret line="28" selection-start-line="28" selection-end-line="28" />
+=======
+            <state relative-caret-position="476">
+              <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+>>>>>>> 8af6b12791be0eedfcca9cecce7763472eae6337
             </state>
           </provider>
         </entry>
@@ -46,6 +51,7 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/urls.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -67,6 +73,8 @@
           </provider>
         </entry>
       </file>
+=======
+>>>>>>> 8af6b12791be0eedfcca9cecce7763472eae6337
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -198,13 +206,21 @@
       <workItem from="1555300968905" duration="496000" />
       <workItem from="1555303757309" duration="19335000" />
       <workItem from="1555359957427" duration="100000" />
+<<<<<<< HEAD
       <workItem from="1555361930274" duration="2183000" />
       <workItem from="1555620324896" duration="144000" />
+=======
+      <workItem from="1555361930274" duration="3348000" />
+>>>>>>> 8af6b12791be0eedfcca9cecce7763472eae6337
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="49395000" />
+=======
+    <option name="totallyTimeSpent" value="27208000" />
+>>>>>>> 8af6b12791be0eedfcca9cecce7763472eae6337
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1381" height="885" extended-state="6" />
@@ -288,6 +304,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/LoyaltyCrawler/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-14">
@@ -321,6 +338,33 @@
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/webapp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LoyaltyCrawler/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+>>>>>>> 8af6b12791be0eedfcca9cecce7763472eae6337
         </state>
       </provider>
     </entry>

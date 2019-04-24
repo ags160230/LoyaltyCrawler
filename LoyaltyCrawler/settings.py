@@ -25,6 +25,7 @@ SECRET_KEY = 'rdmrp+4-=gcc8#_=+5(+0flw$*grziv3_!f8=2ym1@zet4f)47'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 # ALLOWED_HOSTS = ['django-env.dyqa4hpmax.us-west-2.elasticbeanstalk.com:wq']
 ALLOWED_HOSTS = ['127.0.0.1']
 
