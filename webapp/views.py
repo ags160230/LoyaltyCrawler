@@ -38,6 +38,9 @@ def view_artifact_info(request, artifact_id):
         webpage = artifact.artifact_url
         # remove "https://" when real urls are stored
         return redirect("https://" + webpage)
+        
+    except Artifacts.DoesNotExist:
+        raise Http404("Session does not exit")
 """
 
 
