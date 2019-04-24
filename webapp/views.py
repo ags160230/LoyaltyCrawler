@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
 from urllib.request import urlopen
 import os, shutil
-from .crawler import crawler # use this import to call scrapy methods
+from .crawler.crawler import *
 
 # Variable to record number of sessions created & value to increment for new session id
 session_index = 0
