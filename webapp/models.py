@@ -52,6 +52,11 @@ class CriteriaManager(models.Manager):
     def get_criteria():
         return SearchCriteria.objects.all()
 
+    # returns a criterion from the search criteria list
+    @staticmethod
+    def get_criterion(c_id):
+        SearchCriteria.objects.filter(criterion_id=c_id)
+
     # deletes a criterion from search criteria list
     @staticmethod
     def delete_criterion(c_id):
