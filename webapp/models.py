@@ -19,12 +19,12 @@ class ArchiveManager(models.Manager):
     # use session[i] to refer to artifact i
     @staticmethod
     def get_session(s_id):
-        return Artifacts.objects.filter(session_id=s_id)
+        return Artifacts.objects.get(session_id=s_id)
 
     # deletes all artifacts of a session
     @staticmethod
     def delete_session(s_id):
-        Artifacts.objects.filter(session_id=s_id).delete()
+        Artifacts.objects.get(session_id=s_id).delete()
 
     # returns the latest session number
     @staticmethod
@@ -60,12 +60,12 @@ class CriteriaManager(models.Manager):
     # returns a criterion from the search criteria list
     @staticmethod
     def get_criterion(c_id):
-        SearchCriteria.objects.filter(criterion_id=c_id)
+        return SearchCriteria.objects.get(criterion_id=c_id)
 
     # deletes a criterion from search criteria list
     @staticmethod
     def delete_criterion(c_id):
-        SearchCriteria.objects.filter(criterion_id=c_id).delete()
+        SearchCriteria.objects.get(criterion_id=c_id).delete()
 
 
 class SearchCriteria(models.Model):

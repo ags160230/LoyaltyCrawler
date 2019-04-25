@@ -6,21 +6,21 @@ import scrapy.exceptions
 from webapp.models import ArchiveManager, CriteriaManager
 
 
+# Function to generate seed urls for the spider
+# (call this function for user I/O selection of criterion)
+def generate_parameters(search_criterion_id):
+    criterion = CriteriaManager.get_criterion(search_criterion_id)
+    keywords = criterion.criterion
+    start_urls = ['https://google.com/search?q=' + keywords]
+    return start_urls
+
+
 class Crawler(scrapy.Spider):
     name = 'Daddy Crawl Legs'
     custom_settings = {'CLOSESPIDER_ITEMCOUNT': 100}            # the condition to stop when amount hit 100
     session_id = ArchiveManager.get_last_session_id() + 1
-   
-    @classmethod
-    def generate_parameters(search_criterion_id):
-        keywords = CriteriaManager.get_criterion(search_criterion_id)
-        start_urls = ['https://google.com/search?q=' + keywords]
-        return start_urls
-   
-    # This is an error
-	# Cannot call the static method inside the class body 
-    # start_urls = generate_parameters(""" search_criterion_id""")
-    
+    start_urls = generate_parameters(1)
+
     def parse(self, response):
         # url_list = []
 
