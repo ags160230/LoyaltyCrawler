@@ -18,28 +18,28 @@ def create_directory(directory_name):
 
 # Function to copy a directory to a destination location
 def copy_directory(src, dst):
-   try:
-       shutil.copytree(src, dst, symlinks=True, ignore=None)
-       return True
-   except OSError:
+    try:
+        shutil.copytree(src, dst, symlinks=True, ignore=None)
+        return True
+    except OSError:
         # display error message
-       return False
+        return False
 
 # Function to delete a directory
 def delete_directory(path):
-   try:
-       shutil.rmtree(path)
-       return True
-   except OSError:
-        # display error message
-       return False
+    try:
+        shutil.rmtree(path)
+        return True
+    except OSError:
+         # display error message
+        return False
 	   
 # Function to move a directory to a destination location  
 def move_directory(src, dest):
    try:
-       move(src, dst)
-       return True
+        move(src, dst)
+        return True
    except OSError:
         # display error message
-       return False
+        return False
 
