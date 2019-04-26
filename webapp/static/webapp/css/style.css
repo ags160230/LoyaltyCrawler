@@ -177,9 +177,13 @@ ul, #myULleft, #myULright {
 
 .navbar-custom {
   padding: 0 30px;
-  background-color: #f1ebeb;
+  background-color: #e6e6e6;
   webkit-box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.table-bounds {
+  overflow-x: scroll;
 }
 
 .query-search-bar {
