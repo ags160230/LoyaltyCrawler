@@ -8,7 +8,7 @@ import shutil
 #https://docs.python.org/2/library/shutil.html
 
 # Function to create a directory
-def create_directory(directory_name):
+def create_folder(directory_name):
     try:
         os.mkdir(directory_name)
         return True
@@ -17,7 +17,7 @@ def create_directory(directory_name):
         return False
 
 # Function to copy a directory to a destination location
-def copy_directory(src, dst):
+def copy_folder(src, dst):
     try:
         shutil.copytree(src, dst, symlinks=True, ignore=None)
         return True
@@ -26,7 +26,7 @@ def copy_directory(src, dst):
         return False
 
 # Function to delete a directory
-def delete_directory(path):
+def delete_folder(path):
     try:
         shutil.rmtree(path)
         return True
@@ -35,7 +35,7 @@ def delete_directory(path):
         return False
 	   
 # Function to move a directory to a destination location  
-def move_directory(src, dest):
+def move_folder(src, dest):
    try:
         move(src, dst)
         return True
@@ -43,3 +43,12 @@ def move_directory(src, dest):
         # display error message
         return False
 
+# Function to return file tree
+def get_folder_tree (start_path):
+    for root, dirs, files in os.walk(start_path):
+        level = root.replace(start_path, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}/'.format(indent, os.path.basename(root)))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}'.format(subindent, f))
