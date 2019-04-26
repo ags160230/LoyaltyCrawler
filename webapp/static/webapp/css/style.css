@@ -12,7 +12,6 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 10px 20px rgba(0,0,0,0.19);
   border-radius: 15px;
   z-index: 0;
-  height: calc(100vh - 40px);
   margin: 2em;
   padding: 2em;
   background-color: #fff;

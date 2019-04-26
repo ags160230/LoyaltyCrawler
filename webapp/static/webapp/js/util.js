@@ -53,7 +53,7 @@ function buildDataTable(result){
     for(var key in result) {
         formatted.push({
             'id' : key,
-            'link' : "<a>" + result[key].link + "</a>"
+            'link' : '<a target="_blank" href=' + result[key].link + '>' + result[key].link + "</a>"
         }); 
      }
      console.log(formatted);
@@ -68,9 +68,10 @@ function buildDataTable(result){
             
             paging: true,
             scrollY: 300,
-            buttons:[
-                'copyHtml5'
-            ]
+            buttons: [
+                'csvHtml5', 'pdfHtml5'
+            ],
+            dom: 'Bfrtip',
         });
     } );
 }
@@ -112,28 +113,6 @@ function buildTable(result){
     for(var key in result) {
         addLinkToTable(table_start_node, result[key].link, key);
      }
-// <table class="table">
-//   <thead>
-//   <tr>
-//     <th scope="col">#</th>
-//     <th scope="col">URL</th>
-//   </tr>
-// </thead>
-// <tbody>
-//   <tr>
-//     <th scope="row">1</th>
-//     <td>Mark</td>
-//   </tr>
-//   <tr>
-//     <th scope="row">2</th>
-//     <td>Jacob</td>
-//   </tr>
-//   <tr>
-//     <th scope="row">3</th>
-//     <td>Larry</td>
-//   </tr>
-// </tbody>
-// </table>
 }
 
 function addLinkToTable(tbody_node, url, key){
