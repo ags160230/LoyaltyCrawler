@@ -30,20 +30,6 @@ def view_artifact(request, artifact_id):
         raise Http404("Website does not exit")
 
 
-"""
-@require_http_methods(["GET", "POST"])
-def view_artifact_info(request, artifact_id):
-    try:
-        artifact = ArchiveManager.get_artifact(artifact_id)
-        webpage = artifact.artifact_url
-        # remove "https://" when real urls are stored
-        return redirect("https://" + webpage)
-        
-    except Artifacts.DoesNotExist:
-        raise Http404("Session does not exit")
-"""
-
-
 # Page that returns artifacts of a particular session
 @require_http_methods(["GET", "POST"])
 def get_session(request, session_id):
@@ -109,10 +95,10 @@ def edit_search_criteria(request):
 
 
 # Function to start a session, receive artifact url list from scrapy, and store the url's in the DB
-def execute_session(search_criteria):
-
-    # user selects search criterion to use
+def execute_session(search_criteria_id):
     try:
+        # get sesearch_criteria_id through user I/O from frontend
+        CriteriaManager.set_criterion_to_use(search_criteria_id)
         os.system("scrapy runspider crawler.py")
     except OSError:
         # display error message

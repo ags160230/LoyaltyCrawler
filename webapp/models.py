@@ -67,10 +67,30 @@ class CriteriaManager(models.Manager):
     def delete_criterion(c_id):
         SearchCriteria.objects.get(criterion_id=c_id).delete()
 
+    # sets a criterion to use for the next search session
+    @staticmethod
+    def set_criterion_to_use(c_id):
+        record = SearchCriteria.objects.get(criterion_id=c_id)
+        record.in_use = True
+        record.save()
+
+    # returns a criterion to use for the next search session
+    @staticmethod
+    def get_criterion_to_use():
+        return SearchCriteria.objects.get(in_use=True)
+
+    # resets a criterion to out of use
+    @staticmethod
+    def reset_criterion_to_use():
+        record = SearchCriteria.objects.get(in_use=True)
+        record.in_use = False
+        record.save()
+
 
 class SearchCriteria(models.Model):
     criterion_id = models.AutoField(primary_key=True)
     criterion = models.CharField(max_length=255)
+    in_use = models.BooleanField(default=False)
 
     def __str__(self):
         return self.criterion
