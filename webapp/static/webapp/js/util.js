@@ -40,16 +40,47 @@ document.getElementById("session-button").onclick = function(){
     // console.log(url);
     oReq.onload = function(e) {
     let result = oReq.response ; //jQuery.parseJSON(oReq.response);
-    buildTable(result);
+    buildDataTable(result);
 
     }
     oReq.open("GET", url);
     oReq.send();
 };
 
+function buildDataTable(result){
+    
+    let formatted = [];
+    for(var key in result) {
+        formatted.push({
+            'id' : key,
+            'link' : "<a>" + result[key].link + "</a>"
+        }); 
+     }
+     console.log(formatted);
+    
+    $(document).ready( function () {
+        $('#table_id').DataTable({
+            data: formatted,
+            columns: [
+                { data: 'id' },
+                { data: 'link' }
+            ],
+            
+            paging: true,
+            scrollY: 300,
+            buttons:[
+                'copyHtml5'
+            ]
+        });
+    } );
+}
+
+
+// Used with no plugins
 function buildTable(result){
     let table_start_node = document.getElementById("table-start");
     let table_node = document.createElement("TABLE");
+    table_node.id= "data-table";
     table_node.className = "table";
     let thead_node = document.createElement("THEAD");
 
