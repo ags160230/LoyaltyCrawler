@@ -16,4 +16,4 @@ def test_get_folder_tree():
 # perform cleanup tasks after Test case completion
 # ensures conscientious cleanup
 def test_cleanup():
-    print("Cleaup")
+    print("Clean up")
