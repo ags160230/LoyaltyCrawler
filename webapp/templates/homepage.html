@@ -114,10 +114,51 @@
         <!-- WorkSpace page content in the middle of webpage -->
         <div class="main-content">
           <h2> Workspace </h2>
+          <!-- Large modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".keyword-list-modal">Keyword List</button>
+          <div class="modal fade keyword-list-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">List of Webcrawler Keywords</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="query-search-bar">
+                        <form class="form-inline was-validated">
+                          <label for="keywordInsert" style="padding-right: 5px;">Insert new Keyword to Keyword List: </label>
+                          <input class="form-control mr-sm-2" type="text" id="keywordInsert" placeholder="Insert New Keyword" name="keywordInsert" required>
+                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+                          <div class="valid-feedback">Valid</div>
+                          <div class="invalid-feedback">Please fill out this field.</div>
+                        </form>
+                      </div>
+
+                      <div class="navbar-custom">
+                        <div class="container">
+                          <h5>Table of existing keywords</h5>
+                          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <a class="navbar-brand" href="#">Table Navbar</a>
+                          </nav>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
           <div class="ui-box content-page">
             <div class="content">
               <div class="subcontent-header">
-                <h2>Work Space Subcontent 1 - Cache Data Table</h2>
+                <h2>Work Space Subcontent 1 - Web Crawler Session Data Table</h2>
                 <div class="query-search-bar">
                   <form class="form-inline">
                     <input class="form-control mr-sm-2" type="search" placeholder="Query Search" aria-label="Search">
@@ -148,7 +189,7 @@
                     </li>
                   </ul>
                   <div class="tab-content" id="pills-tabContent">
-                    <div id="table-start" class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div id="table-start" class="tab-pane fade show active table-bounds" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     </div>
                     <div class="tab-pane fade" id="pills-setFilter" role="tabpanel" aria-labelledby="pills-setFilter-tab">Set Filter</div>
                     <div class="tab-pane fade" id="pills-groupBy" role="tabpanel" aria-labelledby="pills-groupBy-tab">Group By</div>
@@ -203,6 +244,20 @@
               <!-- <button id="session-button" class="btn btn-sm session-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;" type="submit" onclick="isSessionActive()">New Web Crawler Session</button> -->
             </div>
 
+            <div style="padding-bottom: 0.5em;">
+              <h5>View Keywords List</h5>
+              <div id="keyword-view-button" class="btn btn-sm keyword-view-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Keyword List</button>
+              <!-- <button id="session-button" class="btn btn-sm session-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;" type="submit" onclick="isSessionActive()">New Web Crawler Session</button> -->
+            </div>
+
+            <!-- Smaller subsection that displays current keyword list info -->
+            <div class="info-box">
+              <h5>Keywords In Use:</h5>
+              <h6> 1: Loyalty </h6>
+              <h6> 2: Rewards </h6>
+              <h6> 3: Big Chugus </h6>
+            </div>
+
             <div class="">
               <h5>Select session</h5>
               <div class="select-dropdown-element">
@@ -216,7 +271,7 @@
 
             <!-- Smaller subsection that displays current session info -->
             <div class="info-box">
-              <a href="#">About Session</a>
+              <a href="#">About Session:</a>
               <h6> Name: </h6>
               <h6> Date: </h6>
               <h6> Time Started: </h6>
@@ -224,6 +279,9 @@
               <h6> Total Duration: </h6>
             </div>
 
+            <div style="margin: 10px 0px 10px 0px; bottom: 0">
+              <p style="padding: 6px 8px 6px 16px;">Company Information @Copyright 2019</p>
+            </div>
 
           </div>
         </div>
