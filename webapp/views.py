@@ -1,20 +1,39 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from .models import Artifacts, ArchiveManager, SearchCriteria, CriteriaManager
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import redirect
 from urllib.request import urlopen
 import os, shutil
 from .crawler.crawler import *
 
-# Variable to record number of sessions created & value to increment for new session id
-session_index = 0
+
+"""
+def index(request):
+    return render(request, "form.html")
+
+
+@require_http_methods(["GET", "POST"])
+def search(request):
+    if request.method == 'POST':
+        a_id = request.POST.get('textfield', None)
+
+        return render(view_artifact(request, a_id), "form.html")
+
+    # else:
+        # return render(request, 'form.html')
+
+"""
 
 
 # i.e. test home page
-def home(request):
-    return HttpResponse("You're at the Loyalty Crawler home page!")
+def start_session(request, search_criteria_id):
+    execute_session(search_criteria_id)
+    return HttpResponse("created session: " + str(search_criteria_id))
 
+
+def delete_session(request, session_id):
+    ArchiveManager.delete_session(session_id)
+    return HttpResponse("deleted session: " + str(session_id))
 
 # Redirected page of artifact
 @require_http_methods(["GET", "POST"])
@@ -24,10 +43,10 @@ def view_artifact(request, artifact_id):
         webpage = artifact.artifact_url
 
         # remove "https://" when real urls are stored
-        return redirect("https://" + webpage)
+        return HttpResponseRedirect("https://" + webpage)
 
     except Artifacts.DoesNotExist:
-        raise Http404("Website does not exit")
+        raise Http404("Website does not exist")
 
 
 # Page that returns artifacts of a particular session
@@ -58,8 +77,8 @@ def get_search_criteria(request):
         output = {}
         i = 0
 
-        for a in criteria_list:
-            output[i] = a.artifact_url
+        for c in criteria_list:
+            output[i] = c.criterion
             i += 1
 
         return JsonResponse(output)
@@ -98,21 +117,16 @@ def edit_search_criteria(request):
 def execute_session(search_criteria_id):
     try:
         # get sesearch_criteria_id through user I/O from frontend
+
+        # CriteriaManager.reset_criterion_to_use()
         CriteriaManager.set_criterion_to_use(search_criteria_id)
-        os.system("scrapy runspider crawler.py")
+        run_crawler()
+
     except OSError:
         # display error message
         return False
     else:
         return True
-
-    """
-    artifact_list = ["url_1", "url_2", "url_3"]     # list of urls returned by scrapy
-
-    # use manager to save artifacts in DB
-    for a in artifact_list:
-        ArchiveManager.create_artifact(session_id, a)
-    """
 
 
 # Function to save artifact HTML file to local file reserve directory

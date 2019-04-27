@@ -16,15 +16,14 @@ class ArchiveManager(models.Manager):
         return Artifacts.objects.get(artifact_id=a_id)
 
     # returns artifacts belonging to a particular session
-    # use session[i] to refer to artifact i
     @staticmethod
     def get_session(s_id):
-        return Artifacts.objects.get(session_id=s_id)
+        return Artifacts.objects.filter(session_id=s_id)
 
     # deletes all artifacts of a session
     @staticmethod
     def delete_session(s_id):
-        Artifacts.objects.get(session_id=s_id).delete()
+        Artifacts.objects.filter(session_id=s_id).delete()
 
     # returns the latest session number
     @staticmethod
@@ -70,9 +69,9 @@ class CriteriaManager(models.Manager):
     # sets a criterion to use for the next search session
     @staticmethod
     def set_criterion_to_use(c_id):
-        record = SearchCriteria.objects.get(criterion_id=c_id)
-        record.in_use = True
-        record.save()
+        criterion = SearchCriteria.objects.get(criterion_id=c_id)
+        criterion.in_use = True
+        criterion.save()
 
     # returns a criterion to use for the next search session
     @staticmethod
@@ -82,9 +81,9 @@ class CriteriaManager(models.Manager):
     # resets a criterion to out of use
     @staticmethod
     def reset_criterion_to_use():
-        record = SearchCriteria.objects.get(in_use=True)
-        record.in_use = False
-        record.save()
+        criterion = SearchCriteria.objects.get(in_use=True)
+        criterion.in_use = False
+        criterion.save()
 
 
 class SearchCriteria(models.Model):
