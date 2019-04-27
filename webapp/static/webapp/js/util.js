@@ -53,7 +53,11 @@ function buildDataTable(result){
     for(var key in result) {
         formatted.push({
             'id' : key,
+<<<<<<< HEAD
             'link' : '<a target="_blank" href=' + result[key].link + '  >' + result[key].link + "</a>"
+=======
+            'link' : '<a target="_blank" href=' + result[key].link + '>' + result[key].link + "</a>"
+>>>>>>> dev3
         }); 
      }
      console.log(formatted);
@@ -69,7 +73,11 @@ function buildDataTable(result){
             paging: true,
             scrollY: 300,
             buttons: [
+<<<<<<< HEAD
                 'copy', 'excel', 'pdf'
+=======
+                'csvHtml5', 'pdfHtml5'
+>>>>>>> dev3
             ],
             dom: 'Bfrtip',
         });
