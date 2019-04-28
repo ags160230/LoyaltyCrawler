@@ -42,10 +42,12 @@ $(document).ready(function() {
 			type: "GET",
 			url: "ajax/filetree/get",
 			success: function(data) {
-				// build the tree from my.jstree.js file
-				var instance = $('#jstree-events').jstree(true);
-				instance.deselect_all();
-				instance.select_node('1');
+				// build the tree from my.jstree.js file using the data from success function
+				//var instance = $('#jstree-events').jstree(true);
+				//instance.deselect_all();
+				//instance.select_node('1');
+				// build another tree from my.jqtree.js file using data
+				$('#tree1').tree({data: data});
 		}
 		});
 	});
@@ -63,7 +65,10 @@ $(document).ready(function() {
             dataType: "json",
             data: { "ajax-file-tree-root": $(".file-tree-root").val() },
             success: function(data) {
-                alert(data.message);
+                $('#jqtree1').tree({
+					// this is the data manipulated from filetree_post method in ajax.py
+					data: data.message
+				});
             }
         });
 		

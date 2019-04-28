@@ -21,13 +21,9 @@ $('#collapse-tree-button').on("click", function () {
 });
 
 $('#expand-tree-button').on("click", function () {
-	// load ajax data to the dummy url
-	// this is what the jstree-events pulls from
-	//$('#ajax-filetree-get').load( "ajax/filetree/get");
-	$('#ajax-demo-get').load( "ajax/demo/get/");
-	//var instance = $('#jstree-events').jstree(true);
-	//instance.deselect_all();
-	//instance.select_node('1');
+	var instance = $('#jstree-events').jstree(true);
+	instance.deselect_all();
+	instance.select_node('1');
 });
 
 $('#jstree-events')
