@@ -48,11 +48,18 @@ def filetree_move(request):
     print(request)
     if request.is_ajax() and request.POST:
 	    # this line allows python to retrive data from ajax
-		# earlier, ajax stored the element from webpage into ajax-item
-        webpageItem = request.POST.get('ajax-item')
-        print("The item from page has a value of: " + webpageItem)
+		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
+        moved_node = request.POST.get('moved_node_name')
+        target_node = request.POST.get('target_node_name')
+        position = request.POST.get('position')
+        previous_parent = request.POST.get('previous_parent_name')
+		
+        print("moved_node_name: " + moved_node)
+        print("target_node_name: " + target_node)
+        print("position: " + position)
+        print("previous_parent_name: " + previous_parent)				
 		# this shows python maniuplating the string before sending back to ajax
-        data = {'message': webpageItem + " then python edited then string"}
+        data = {'message': moved_node + " then python edited then string"}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404

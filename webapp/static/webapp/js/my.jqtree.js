@@ -7,7 +7,7 @@ $('#ajax-nested-jqtree').on(
 		// save attributes from moved_info
         var moved_node = event.move_info.moved_node;
         var target_node = event.move_info.target_node;
-        var position= event.move_info.position;
+        var position = event.move_info.position;
         var previous_parent = event.move_info.previous_parent;
 		
 		// print to console
@@ -25,7 +25,12 @@ $('#ajax-nested-jqtree').on(
 				type: "POST",
 				url: "ajax/filetree/move/",
 				// has to be a post call so we can edit data
-				data: { "ajax-item": $(".todo-item").val() },
+				data: 	{ 
+							"moved_node_name": moved_node.name,
+							"target_node_name": target_node.name,
+							"position": position,
+							"previous_parent_name": previous_parent.name,
+						},
 				//data: { "moved-node": moved_node },
 				success: function(data) {
 			}
