@@ -1,6 +1,8 @@
 from django.urls import path
+from django.conf.urls import url
 from django.views.generic import TemplateView
 from . import views
+from . import ajax
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='homepage.html')),
@@ -10,6 +12,7 @@ urlpatterns = [
     path('criteria/edit', views.edit_search_criteria, name='edit_search_criteria'),
     path('start/<int:search_criteria_id>/', views.start_session, name='start_session'),
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
+	path('ajax/more/', ajax.more_todo, name='more_todo'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,
