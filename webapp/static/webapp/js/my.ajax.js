@@ -83,7 +83,7 @@ $(document).ready(function() {
             success: function(data) {
                 $('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
-					data: data.message,
+					data: data.directories,
 					dragAndDrop: true
 				});
             }

@@ -2,6 +2,7 @@ import json
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
 from .file_operations import *
+import os
 
 # demo get function for ajax
 # get is used when you don't need data from the webpage
@@ -78,8 +79,24 @@ def filetree_post(request):
 		# earlier, ajax stored the element from webpage into ajax-item
         webpageItem = request.POST.get('ajax-file-tree-root')
         print("The item from page has a value of: " + webpageItem)
+        directory = 'C:/GitHub/a'
+        dir_nodes = []
+        file_nodes = []
+        # walk through directory
+        for root, directories, filenames in os.walk(directory):
+            dir_nodes.append(root)
+            for directory in directories:
+                print(os.path.join(root, directory))
+            dir_nodes.append(directories)
+            for filename in filenames:
+                print(os.path.join(root,filename))
+            file_nodes.append(filenames)
 		# this shows python maniuplating the string before sending back to ajax
-        data = {'message': webpageItem + " then python edited the string"}
+        print(dir_nodes)
+        data = {
+					'directories': dir_nodes,
+					'files': file_nodes,
+				}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
