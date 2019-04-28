@@ -95,9 +95,11 @@ def filetree_post(request):
         root = 'C:/GitHub/a'
         trim = root
         trimed_dirs = [root]
-        trimed_nested = []
+        trimed_nested = ""
         trimed_dirs = (recur_get_dir (root, trim, trimed_dirs, trimed_nested))
         print(trimed_dirs)
+        json_str = json.dumps(trimed_dirs)
+        print(json_str)
         #json_str = json.dumps(dir_nodes)
         #print(json_str)
         data = {
@@ -109,7 +111,7 @@ def filetree_post(request):
         raise Http404
 		
 def recur_get_dir (root, trim, trimed_dirs, trimed_nested):
-    trimed_nested = []
+    trimed_nested = ""
     dirs = os.listdir(root)
 	#print(root)
     #print(dirs)
@@ -126,20 +128,19 @@ def recur_get_dir (root, trim, trimed_dirs, trimed_nested):
                     full_nested_path = os.path.join(root, nested_dir)
                     root = full_nested_path
                     root = full_nested_path
-                    trimed_nested.append(nested_dir)
+                    trimed_nested = ["name:", nested_dir]
                     recur_get_dir(root, trim, trimed_dirs, trimed_nested)
-				# add nested list to trimmed
-                nested_tuple = [trimed_dir, (nested_dirs)]
+				# add nested tuple that represents entire nested level after recursion
+                nested_tuple = [["name: ", trimed_dir], ["children:", trimed_nested]]
                 trimed_dirs.append(nested_tuple)
+				# clear trimed_nested list
                 trimed_nested = []
-                #trimed_dirs.append(trimed_nested)
 			# add single dir to trimmed
             else:
-                trimed_dirs.append(trimed_dir)
+                trimed_dirs.append(["name: ", trimed_dir])
 		# add file to trimed
         else:
-            trimed_dirs.append(trimed_dir)
+            trimed_dirs.append(["name: " , trimed_dir])
     # end of dirs at current level
-	# paste the nested to the end if they exist
     return trimed_dirs
     
