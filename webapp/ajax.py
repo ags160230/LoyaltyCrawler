@@ -18,7 +18,11 @@ def more_todo(request):
 def add_todo(request):
     print("add")
     if request.is_ajax() and request.POST:
-        data = {'message': "%s added" % request.POST.get('item')}
+	    # this line allows python to retrive data from the text box
+        #data = {'message': "%s added" % request.POST.get('item')}
+		
+		# this shows python maniuplating the string before sending back to ajax
+        data = {'message': "Python edited string"}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404

@@ -27,7 +27,7 @@ $(document).ready(function() {
             dataType: "json",
             data: { "item": $(".todo-item").val() },
             success: function(data) {
-				$('ul').append('<li>'+$(".todo-item").val()+'</li>');
+				$('ul').append('<li>'+data.message+'</li>');
                 alert(data.message);
             }
         });
