@@ -85,17 +85,18 @@ def filetree_post(request):
         # walk through directory
         for root, directories, filenames in os.walk(directory):
             dir_nodes.append(root)
-            for directory in directories:
-                print(os.path.join(root, directory))
+            #for directory in directories:
+                #print(os.path.join(root, directory))
             dir_nodes.append(directories)
-            for filename in filenames:
-                print(os.path.join(root,filename))
+            #for filename in filenames:
+                #print(os.path.join(root,filename))
             file_nodes.append(filenames)
 		# this shows python maniuplating the string before sending back to ajax
         root = 'C:/GitHub/a'
         trim = root
         trimed_dirs = [root]
-        trimed_dirs = (recur_get_dir (root, trim, trimed_dirs))
+        trimed_nested = []
+        trimed_dirs = (recur_get_dir (root, trim, trimed_dirs, trimed_nested))
         print(trimed_dirs)
         #json_str = json.dumps(dir_nodes)
         #print(json_str)
@@ -107,21 +108,38 @@ def filetree_post(request):
     else:
         raise Http404
 		
-def recur_get_dir (root, trim, trimed_dirs):
+def recur_get_dir (root, trim, trimed_dirs, trimed_nested):
+    trimed_nested = []
     dirs = os.listdir(root)
-    print(root)
-    print(dirs)
+	#print(root)
+    #print(dirs)
     for dir in dirs:
         full_path = os.path.join(root, dir)
         trimed_dir = dir
-        trimed_dirs.append(trimed_dir)
         if (os.path.isdir(full_path)):
             nested_dirs = os.listdir(full_path)
             if len(nested_dirs) != 0:
                 trim = full_path
                 root = full_path
-				# recuversive call to start processesing next level
-                recur_get_dir(root, trim, trimed_dirs)
+				# recuversive call to start processes next level
+                for nested_dir in nested_dirs:
+                    full_nested_path = os.path.join(root, nested_dir)
+                    root = full_nested_path
+                    root = full_nested_path
+                    trimed_nested.append(nested_dir)
+                    recur_get_dir(root, trim, trimed_dirs, trimed_nested)
+				# add nested list to trimmed
+                nested_tuple = [trimed_dir, (nested_dirs)]
+                trimed_dirs.append(nested_tuple)
+                trimed_nested = []
+                #trimed_dirs.append(trimed_nested)
+			# add single dir to trimmed
+            else:
+                trimed_dirs.append(trimed_dir)
+		# add file to trimed
+        else:
+            trimed_dirs.append(trimed_dir)
     # end of dirs at current level
+	# paste the nested to the end if they exist
     return trimed_dirs
     
