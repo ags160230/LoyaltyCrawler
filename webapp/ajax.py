@@ -92,11 +92,36 @@ def filetree_post(request):
                 print(os.path.join(root,filename))
             file_nodes.append(filenames)
 		# this shows python maniuplating the string before sending back to ajax
-        print(dir_nodes)
+        root = 'C:/GitHub/a'
+        trim = root
+        trimed_dirs = [root]
+        trimed_dirs = (recur_get_dir (root, trim, trimed_dirs))
+        print(trimed_dirs)
+        #json_str = json.dumps(dir_nodes)
+        #print(json_str)
         data = {
-					'directories': dir_nodes,
+					'directories': trimed_dirs,
 					'files': file_nodes,
 				}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
+		
+def recur_get_dir (root, trim, trimed_dirs):
+    dirs = os.listdir(root)
+    print(root)
+    print(dirs)
+    for dir in dirs:
+        full_path = os.path.join(root, dir)
+        trimed_dir = dir
+        trimed_dirs.append(trimed_dir)
+        if (os.path.isdir(full_path)):
+            nested_dirs = os.listdir(full_path)
+            if len(nested_dirs) != 0:
+                trim = full_path
+                root = full_path
+				# recuversive call to start processesing next level
+                recur_get_dir(root, trim, trimed_dirs)
+    # end of dirs at current level
+    return trimed_dirs
+    
