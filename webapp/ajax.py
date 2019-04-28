@@ -1,6 +1,7 @@
 import json
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
+from .file_operations import *
 
 # demo get function for ajax
 # get is used when you don't need data from the webpage
@@ -25,7 +26,7 @@ def demo_post(request):
         webpageItem = request.POST.get('ajax-item')
         print("The item from page has a value of: " + webpageItem)
 		# this shows python maniuplating the string before sending back to ajax
-        data = {'message': webpageItem + " then python edited then string"}
+        data = {'message': webpageItem + " then python edited the string"}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
@@ -57,9 +58,13 @@ def filetree_move(request):
         print("moved_node_name: " + moved_node)
         print("target_node_name: " + target_node)
         print("position: " + position)
-        print("previous_parent_name: " + previous_parent)				
+        print("previous_parent_name: " + previous_parent)
+		# test copy
+        source = 'C:/GitHub/a/a1.txt'
+        destination = 'C:/GitHub/a/a2.txt'
+        copy_file(source, destination)		
 		# this shows python maniuplating the string before sending back to ajax
-        data = {'message': moved_node + " then python edited then string"}
+        data = {'message': moved_node + " then python edited the string"}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
@@ -74,7 +79,7 @@ def filetree_post(request):
         webpageItem = request.POST.get('ajax-file-tree-root')
         print("The item from page has a value of: " + webpageItem)
 		# this shows python maniuplating the string before sending back to ajax
-        data = {'message': webpageItem + " then python edited then string"}
+        data = {'message': webpageItem + " then python edited the string"}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
