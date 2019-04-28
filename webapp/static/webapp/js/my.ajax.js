@@ -51,7 +51,23 @@ $(document).ready(function() {
 		}
 		});
 	});
-
+	
+	// AJAX GET filetree
+	$('#ajax-filetree-move').click(function(){
+		console.log('ajax-filetree-move called');
+		$.ajax({
+			type: "GET",
+			url: "ajax/filetree/move",
+			success: function(data) {
+				// build the tree from my.jstree.js file using the data from success function
+				//var instance = $('#jstree-events').jstree(true);
+				//instance.deselect_all();
+				//instance.select_node('1');
+				// build another tree from my.jqtree.js file using data
+				$('#tree1').tree({data: data});
+		}
+		});
+	});
 	
 	// AJAX POST filetree
 	$('#ajax-filetree-post').click(function(){
@@ -67,7 +83,8 @@ $(document).ready(function() {
             success: function(data) {
                 $('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
-					data: data.message
+					data: data.message,
+					dragAndDrop: true
 				});
             }
         });

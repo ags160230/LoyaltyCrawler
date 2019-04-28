@@ -14,6 +14,7 @@ urlpatterns = [
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
 	path('ajax/filetree/get/', ajax.filetree_get, name='filetree_get'),
 	path('ajax/filetree/post/', ajax.filetree_post, name='filetree_post'),
+	path('ajax/filetree/move/', ajax.filetree_move, name='filetree_move'),
 	# simple demonstrations of get and post from page
 	path('ajax/demo/get/', ajax.demo_get, name='demo_get'),
 	path('ajax/demo/post/', ajax.demo_post, name='demo_post'),
