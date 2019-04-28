@@ -1,5 +1,5 @@
 // data from callback
-$('#clbk').jstree({
+$('#jstree-callback').jstree({
 	'core' : {
 		'data' : function (node, cb) {
 			if(node.id === "#") {
@@ -15,18 +15,18 @@ $('#clbk').jstree({
 // interaction and events
 $('#collapse-tree-button').on("click", function () {
 	alert('Hide tree')
-	var instance = $('#evts').jstree(true);
+	var instance = $('#jstree-events').jstree(true);
 	instance.deselect_all();
-	$('#evts').jstree('close_all');
+	$('#jstree-events').jstree('close_all');
 });
 
 $('#expand-tree-button').on("click", function () {
-	var instance = $('#evts').jstree(true);
+	var instance = $('#jstree-events').jstree(true);
 	instance.deselect_all();
 	instance.select_node('1');
 });
 
-$('#evts')
+$('#jstree-events')
 	.on("changed.jstree", function (e, data) {
 		if(data.selected.length) {
 			alert('The selected node is: ' + data.instance.get_node(data.selected[0]).text);
