@@ -1,12 +1,13 @@
 // https://godjango.com/18-basic-ajax/
 
 $(document).ready(function() {
-	// AJAX GET
-	$('#ajax-get-more').click(function(){
-		console.log('get called');
+	
+	// AJAX GET demo
+	$('#ajax-demo-get').click(function(){
+		console.log('ajax-demo-get called');
 		$.ajax({
 			type: "GET",
-			url: "ajax/more",
+			url: "ajax/demo/get",
 			success: function(data) {
 			for(i = 0; i < data.length; i++){
 				$('ul').append('<li>'+data[i]+'</li>');
@@ -15,17 +16,17 @@ $(document).ready(function() {
 		});
 	});
 
-	// AJAX POST
-	$('#ajax-add-todo').click(function(){
-		console.log('add called');
+	// AJAX POST demo
+	$('#ajax-demo-post').click(function(){
+		console.log('ajax-demo-post called');
 		console.log( 'Todo box is: ' + $(".todo-item").val());
 
         $.ajax({
             type: "POST",
 			// note how the url differs, there is a trailing slash
-            url: "ajax/add/",
+            url: "ajax/demo/post/",
             dataType: "json",
-            data: { "item": $(".todo-item").val() },
+            data: { "ajax-item": $(".todo-item").val() },
             success: function(data) {
 				$('ul').append('<li>'+data.message+'</li>');
                 alert(data.message);
@@ -33,9 +34,40 @@ $(document).ready(function() {
         });
 		
 	});
+	
+	// AJAX GET filetree
+	$('#ajax-filetree-get').click(function(){
+		console.log('ajax-filetree-get called');
+		$.ajax({
+			type: "GET",
+			url: "ajax/filetree/get",
+			success: function(data) {
+				// build the tree from my.jstree.js file
+				var instance = $('#jstree-events').jstree(true);
+				instance.deselect_all();
+				instance.select_node('1');
+		}
+		});
+	});
 
+	
+	// AJAX POST filetree
+	$('#ajax-filetree-post').click(function(){
+		console.log('ajax-filetree-post called');
+		console.log( 'Root is: ' + $(".file-tree-root").val());
 
-
+        $.ajax({
+            type: "POST",
+			// note how the url differs, there is a trailing slash
+            url: "ajax/filetree/post/",
+            dataType: "json",
+            data: { "ajax-file-tree-root": $(".file-tree-root").val() },
+            success: function(data) {
+                alert(data.message);
+            }
+        });
+		
+	});
 
 	$.ajaxSetup({ 
 		 beforeSend: function(xhr, settings) {

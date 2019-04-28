@@ -12,8 +12,11 @@ urlpatterns = [
     path('criteria/edit', views.edit_search_criteria, name='edit_search_criteria'),
     path('start/<int:search_criteria_id>/', views.start_session, name='start_session'),
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
-	path('ajax/more/', ajax.more_todo, name='more_todo'),
-	path('ajax/add/', ajax.add_todo, name='add_todo'),
+	path('ajax/filetree/get/', ajax.filetree_get, name='filetree_get'),
+	path('ajax/filetree/post/', ajax.filetree_post, name='filetree_post'),
+	# simple demonstrations of get and post from page
+	path('ajax/demo/get/', ajax.demo_get, name='demo_get'),
+	path('ajax/demo/post/', ajax.demo_post, name='demo_post'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,
