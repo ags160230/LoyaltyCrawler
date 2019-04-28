@@ -65,7 +65,7 @@ $(document).ready(function() {
             dataType: "json",
             data: { "ajax-file-tree-root": $(".file-tree-root").val() },
             success: function(data) {
-                $('#jqtree1').tree({
+                $('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
 					data: data.message
 				});
