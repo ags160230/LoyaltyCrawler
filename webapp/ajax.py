@@ -92,14 +92,15 @@ def filetree_post(request):
                 #print(os.path.join(root,filename))
             file_nodes.append(filenames)
 		# this shows python maniuplating the string before sending back to ajax
-        root = 'C:/GitHub/a'
-        trim = root
-        trimed_dirs = [root]
-        trimed_nested = ""
-        trimed_dirs = (recur_get_dir (root, trim, trimed_dirs, trimed_nested))
-        print(trimed_dirs)
-        json_str = json.dumps(trimed_dirs)
-        print(json_str)
+        starting_node = 'C:\\GitHub\\a'
+        current_node = starting_node
+        trimed_dirs = [["name: ", starting_node]]
+        trimed_nested = []
+        #trimed_dirs = recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
+        list_files(starting_node)
+		# print(trimed_dirs)
+        # json_str = json.dumps(trimed_dirs)
+        # print(json_str)
         #json_str = json.dumps(dir_nodes)
         #print(json_str)
         data = {
@@ -110,37 +111,55 @@ def filetree_post(request):
     else:
         raise Http404
 		
-def recur_get_dir (root, trim, trimed_dirs, trimed_nested):
-    trimed_nested = ""
-    dirs = os.listdir(root)
-	#print(root)
-    #print(dirs)
+def recur_get_dir (current_node, starting_node, trimed_dirs, trimed_nested):
+    
+    dirs = os.listdir(current_node)
+    print(dirs)
     for dir in dirs:
-        full_path = os.path.join(root, dir)
+        full_path = os.path.join(current_node, dir)
         trimed_dir = dir
         if (os.path.isdir(full_path)):
             nested_dirs = os.listdir(full_path)
-            if len(nested_dirs) != 0:
-                trim = full_path
-                root = full_path
+            if len(nested_dirs) > 0:
+                nested_dir = nested_dirs[0]
+                starting_node = os.path.join(current_node, dir) 
+                current_node = os.path.join(full_path, nested_dir)
+                trimed_nested.append(["name:", nested_dir])
+                print("Nested: " + nested_dir)
+                recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
 				# recuversive call to start processes next level
-                for nested_dir in nested_dirs:
-                    full_nested_path = os.path.join(root, nested_dir)
-                    root = full_nested_path
-                    root = full_nested_path
-                    trimed_nested = ["name:", nested_dir]
-                    recur_get_dir(root, trim, trimed_dirs, trimed_nested)
-				# add nested tuple that represents entire nested level after recursion
-                nested_tuple = [["name: ", trimed_dir], ["children:", trimed_nested]]
-                trimed_dirs.append(nested_tuple)
-				# clear trimed_nested list
-                trimed_nested = []
-			# add single dir to trimmed
+                # for nested_dir in nested_dirs:
+                    # print("nested:" + nested_dir)
+                    # full_nested_path = os.path.join(current_node, nested_dir)
+                    # print("nested path:" + full_nested_path)
+                    # current_node =  full_nested_path
+                    # trimed_nested.append(["name:", nested_dir])
+                    # recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
+				# # add nested tuple that represents entire nested level after recursion
+                # nested_tuple = [["name: ", trimed_dir], ["children:", trimed_nested]]
+                # trimed_dirs.append(nested_tuple)
+				# # clear trimed_nested list
+                # trimed_nested = []
+			# # add single dir to trimmed
             else:
-                trimed_dirs.append(["name: ", trimed_dir])
+				# add nested tuple that represents entire nested level after recursion
+                nested_tuple = [["name: ", current_node], ["children:", trimed_nested]]
+                #trimed_dirs.append(["name: ", trimed_dir])
+                trimed_dirs.append(nested_tuple)
 		# add file to trimed
         else:
-            trimed_dirs.append(["name: " , trimed_dir])
+			# add nested tuple that represents entire nested level after recursion
+            nested_tuple = [["name: ", current_node], ["children:", trimed_nested]]
+            trimed_dirs.append(nested_tuple)
     # end of dirs at current level
     return trimed_dirs
     
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}{}/'.format(indent, "name: ", os.path.basename(root)))
+        print('{}{}/'.format(indent, "children: "))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}{}'.format(subindent, "name: ",  f))
