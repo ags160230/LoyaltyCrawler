@@ -13,6 +13,7 @@ urlpatterns = [
     path('start/<int:search_criteria_id>/', views.start_session, name='start_session'),
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
 	path('ajax/more/', ajax.more_todo, name='more_todo'),
+	path('ajax/add/', ajax.add_todo, name='add_todo'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,

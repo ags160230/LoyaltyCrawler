@@ -148,16 +148,17 @@
 					<ul>
 						<li>Take out trash</li>
 					</ul>
-					<div id="ajax-get-more" class="btn btn-sm expand-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Get More</div>
+					<div id="ajax-get-more" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Get More</div>
 				</div>
 				<div class="container">
 					<h3>Add Todo:</h3>
+					{% csrf_token %}
 					<div>
 						<label for="todo">
 							<input class="todo-item" type="text" placeholder="Todo Item">
 						</div>
 					</div>
-					<button class='btn add-todo'>Add Todo</button>
+					<div id="ajax-add-todo" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Add todo</div>
 				</div>
 			</div>
 
