@@ -32,16 +32,20 @@ function setUpAddCriteriaButton(){
 
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
+        let keyword_to_add = document.getElementById("keywordInsert").value;
         let dev_root = "http://127.0.0.1:8000/";
-        let local_url = "webapp/criteria/add";
+        let local_url = "webapp/criteria/add/" + keyword_to_add;
         let url = dev_root + local_url; 
 
         oReq.onload = function(e) {
-        let result = oReq.response ; 
+            let result = oReq.response ;
             let table_start = document.getElementById("nav-bar-start");
+            while (table_start.hasChildNodes()) {
+                table_start.removeChild(table_start.lastChild);
+            }
             for(var key in result) {
                 let link = document.createElement("div");
-                link.innerHTML = result[key];
+                link.innerHTML = result[key];   
                 table_start.appendChild(link);
              }
         }
@@ -132,58 +136,19 @@ function setUpStartSession(){
     document.getElementById("session-button").onclick = function(){
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
-        let dev_root = "http://127.0.0.1:8000/";
-        let local_url = "start/" + (amount_of_sessions+1);
+        let dev_root = "http://127.0.0.1:8000/webapp/";
+        let local_url = "start_session/" + (amount_of_sessions+1);
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
         oReq.onload = function(e) {
         let result = oReq.response ; //jQuery.parseJSON(oReq.response);
-        buildDataTable(result);
-    
+        // buildDataTable(result);
+        console.log(result);
+
         }
         oReq.open("GET", url);
         oReq.send();
     };
-    
-    
-    
-    // Used with no plugins
-    function buildTable(result){
-        let table_start_node = document.getElementById("table-start");
-        let table_node = document.createElement("TABLE");
-        table_node.id= "data-table";
-        table_node.className = "table";
-        let thead_node = document.createElement("THEAD");
-    
-        table_start_node.appendChild(table_node);
-        table_node.appendChild(thead_node);
-    
-        let tr_node = document.createElement("TR");
-        thead_node.appendChild(tr_node);
-    
-        let th_node = document.createElement("TH");
-        th_node.scope - "col";
-        th_node.innerText = "#";
-        tr_node.appendChild(th_node);
-    
-        th_node = document.createElement("TH");
-        th_node.scope - "col";
-        th_node.innerText = "URL";
-        tr_node.appendChild(th_node);
-        
-        th_node = document.createElement("TH");
-        th_node.scope - "col";
-        th_node.innerText = "Delete";
-        tr_node.appendChild(th_node);
-    
-        let tbody_node = document.createElement("TBODY");
-        table_node.appendChild(tbody_node);
-    
-    
-        for(var key in result) {
-            addLinkToTable(table_start_node, result[key].link, key);
-         }
-    }
     
     function addLinkToTable(tbody_node, url, key){
         let tr_node = document.createElement("TR");
@@ -203,11 +168,33 @@ function setUpStartSession(){
     }
 }
 
+function setUpSessionSelector(){
+    let current_session = 1;
+
+    var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let dev_root = "http://127.0.0.1:8000/webapp/";
+        let local_url = "check_last_session_index";
+        let url = dev_root + local_url; 
+
+        oReq.onload = function(e) {
+        let result = oReq.response ; 
+            console.log(result);
+        }
+
+        oReq.open("GET", url);
+        oReq.send();
+
+}
+
     function main(){
+        
+        setUpSessionSelector();
         setUpModal();
         setUpStartSession();
         setUpViewCriteria();
         setUpGetSession();
+        setUpAddCriteriaButton();
     }
     main();
     
