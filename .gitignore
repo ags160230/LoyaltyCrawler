@@ -7,3 +7,4 @@
 # python files
 # Byte-compiled / optimized / DLL files stored in the cache
 **__pycache__
+*.pyc

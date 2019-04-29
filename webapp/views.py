@@ -86,26 +86,25 @@ def get_search_criteria(request):
     except SearchCriteria.DoesNotExist:
         raise Http404("Search Criteria does not exit")
 
-
-# Page that allows user to edit search criteria list & returns updated search criteria list
+# Page that allows user to add search criteria list & returns updated search criteria list
 @require_http_methods(["GET", "POST"])
-def edit_search_criteria(request):
-    # criteria_list = CriteriaManager.get_criteria()
-
-    # GUI interaction to create criterion or delete criterion
-    # user selects option to add or delete criterion | i.e True = add, False = delete
-
-    edit_action = True
-
+def add_search_criteria(request, new_criterion):
     try:
-        if edit_action:
-            # user enters criterion to be added
-            criterion = "criterion here"
-            CriteriaManager.create_criterion(criterion)
-        else:
-            # user selects criterion to delete | example criterion_id = 1 = criterion_list[0]
-            criterion_id = 0
-            CriteriaManager.delete_criterion(criterion_id)
+        criterion = new_criterion
+        CriteriaManager.create_criterion(criterion)
+
+        return get_search_criteria(request)
+
+    except SearchCriteria.DoesNotExist:
+        raise Http404("Search Criteria does not exit")
+
+
+# Page that allows user to remove search criteria list & returns updated search criteria list
+@require_http_methods(["GET", "POST"])
+def remove_search_criteria(request, criterionToRemove):
+    try:
+        criterion_id = 0
+        CriteriaManager.delete_criterion(criterion_id)
 
         return get_search_criteria(request)
 
