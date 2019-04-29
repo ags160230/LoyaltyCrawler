@@ -63,8 +63,8 @@ class CriteriaManager(models.Manager):
 
     # deletes a criterion from search criteria list
     @staticmethod
-    def delete_criterion(c_id):
-        SearchCriteria.objects.get(criterion_id=c_id).delete()
+    def delete_criterion(c):
+        SearchCriteria.objects.get(criterion=c).delete()
 
     # sets a criterion to use for the next search session
     @staticmethod

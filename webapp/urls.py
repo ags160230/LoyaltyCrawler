@@ -4,12 +4,13 @@ from . import views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='homepage.html')),
-    path('session/<int:session_id>/', views.get_session, name='get_session'),
+    path('get_session/<int:session_id>/', views.get_session, name='get_session'),
     path('artifact/<int:artifact_id>/', views.view_artifact, name='view_artifact'),
     path('criteria', views.get_search_criteria, name='get_search_criteria'),
-    path('criteria/edit', views.edit_search_criteria, name='edit_search_criteria'),
-    path('start/<int:search_criteria_id>/', views.start_session, name='start_session'),
-    path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
+    path('criteria/add', views.add_search_criteria, name='add_search_criteria'),
+    path('criteria/remove', views.remove_search_criteria, name='remove_search_criteria'),
+    path('start_session/<int:search_criteria_id>/', views.start_session, name='start_session'),
+    path('delete_session/<int:session_id>/', views.delete_session, name='delete_session'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,
