@@ -1,5 +1,29 @@
-// https://godjango.com/18-basic-ajax/
+// https://www.jqwidgets.com/populating-jquery-tree-with-json-data/
+var build_data = function (data) {
+	var source = [];
+	var items = [];
+	// build hierarchical source.
+        var item = data[i];
+        var name = item["name"];
+        var parentid = item["parentid"];
+        var id = item["id"];
 
+        if (items[parentid]) {
+            var item = { parentid: parentid, name: name, item: item };
+            if (!items[parentid].items) {
+                items[parentid].items = [];
+            }
+            items[parentid].items[items[parentid].items.length] = item;
+            items[id] = item;
+        }
+        else {
+            items[id] = { parentid: parentid, name: name, item: item };
+            source[id] = items[id];
+        }
+	return source;
+}
+
+// https://godjango.com/18-basic-ajax/
 $(document).ready(function() {
 	
 	// AJAX GET demo
@@ -83,7 +107,8 @@ $(document).ready(function() {
             success: function(data) {
                 $('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
-					data: data.directories,
+					dataType: "json",
+					data: build_data(data),
 					dragAndDrop: true
 				});
             }

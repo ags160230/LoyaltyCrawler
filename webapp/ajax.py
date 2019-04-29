@@ -97,19 +97,52 @@ def filetree_post(request):
         trimed_dirs = [["name: ", starting_node]]
         trimed_nested = []
         #trimed_dirs = recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
-        list_files(starting_node)
+        #list_files(starting_node)
+        #roots = get_roots(starting_node)
+        #formated_roots = format_roots(roots)
+        #print(formated_roots)
+        json_roots = json.dumps(path_to_dict(starting_node))
+        print(json_roots)
 		# print(trimed_dirs)
         # json_str = json.dumps(trimed_dirs)
         # print(json_str)
         #json_str = json.dumps(dir_nodes)
         #print(json_str)
-        data = {
-					'directories': trimed_dirs,
-					'files': file_nodes,
+        data =  {
+					'tree_data': json_roots,
 				}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
+		
+
+
+def path_to_dict(path):
+    d = {'name': os.path.basename(path)}
+    if os.path.isdir(path):
+        d['type'] = "directory"
+        d['children'] = [path_to_dict(os.path.join(path,x)) for x in os.listdir(path)]
+        d['parentid'] = os.path.abspath(os.path.join(path, os.pardir))
+        d['id'] = path
+    else:
+        d['type'] = "file"
+    return d
+
+
+
+def format_roots(roots):	
+    i = 0
+    tree_data = ["name:" , roots[0]]
+    while i < len(roots): 
+        tree_data.append(["name:" , roots[i][0]])
+        i += 1
+    return tree_data
+	
+def get_roots(path):
+    roots = []
+    for root,d_names,f_names in os.walk(path):
+	    roots.append([root, f_names])
+    return roots
 		
 def recur_get_dir (current_node, starting_node, trimed_dirs, trimed_nested):
     
@@ -158,8 +191,14 @@ def list_files(startpath):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = ' ' * 4 * (level)
-        print('{}{}{}/'.format(indent, "name: ", os.path.basename(root)))
-        print('{}{}/'.format(indent, "children: "))
+        previous_indent = ' ' * 4 * (level - 1)
+        print('{}{}{},'.format(indent, "{name: ", "'"+os.path.basename(root)+"'"))
+        if len(os.listdir(root)) > 0:
+            print('{}{}'.format(indent, "children: ["))
         subindent = ' ' * 4 * (level + 1)
         for f in files:
-            print('{}{}{}'.format(subindent, "name: ",  f))
+            print('{}{}{},'.format(subindent, "{name: ",  "'"+f+"'}"))
+        #if len(os.listdir(root)) > 0:
+            #print('{}{}'.format(indent, "]"))
+            #print('{}{}'.format(indent, "}"))	
+    #print('{}'.format("}"))
