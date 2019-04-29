@@ -1,8 +1,41 @@
-// https://www.jqwidgets.com/populating-jquery-tree-with-json-data/
-var build_data = function (data) {
-	var source = [];
-	var items = [];
-	// build hierarchical source.
+var data1 = [
+    {
+        name: 'node1', id: 1,
+        children: [
+            { name: 'child1', id: 2 },
+            { name: 'child2', id: 3 }
+        ]
+    },
+    {
+        name: 'node2', id: 4,
+        children: [
+            { name: 'child3', id: 5 }
+        ]
+    }
+];
+
+var data2 = [
+{
+    "name": "a",
+	"type": "directory",
+    "id": "1",
+    "parentid": "-1"
+},{
+    "name": "b",
+	"type": "directory",
+    "id": "1",
+    "parentid": "1"
+},{
+    "name": "c",
+	"type": "directory",
+    "id": "1",
+    "parentid": "1"
+}]
+var builddata = function (data) {
+    var source = [];
+    var items = [];
+    // build hierarchical source.
+    for (i = 0; i < data.length; i++) {
         var item = data[i];
         var name = item["name"];
         var parentid = item["parentid"];
@@ -20,9 +53,11 @@ var build_data = function (data) {
             items[id] = { parentid: parentid, name: name, item: item };
             source[id] = items[id];
         }
-	return source;
+    }
+    return source;
 }
 
+// console.log(source);
 // https://godjango.com/18-basic-ajax/
 $(document).ready(function() {
 	
@@ -92,7 +127,7 @@ $(document).ready(function() {
 		}
 		});
 	});
-	
+
 	// AJAX POST filetree
 	$('#ajax-filetree-post').click(function(){
 		console.log('ajax-filetree-post called');
@@ -105,10 +140,14 @@ $(document).ready(function() {
             dataType: "json",
             data: { "ajax-file-tree-root": $(".file-tree-root").val() },
             success: function(data) {
-                $('#ajax-nested-jqtree').tree({
+				// access tree_data from the data returned
+				console.log(data.tree_data);
+				console.log(data1);
+				//var source = builddata(data.tree_data);
+				//console.log(source);
+				$('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
-					dataType: "json",
-					data: build_data(data),
+					data: data.tree_data,
 					dragAndDrop: true
 				});
             }

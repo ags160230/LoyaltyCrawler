@@ -101,15 +101,22 @@ def filetree_post(request):
         #roots = get_roots(starting_node)
         #formated_roots = format_roots(roots)
         #print(formated_roots)
-        json_roots = json.dumps(path_to_dict(starting_node))
+        json_roots = path_to_dict(starting_node)
+        print("Dictionary is: ")
         print(json_roots)
+        rootChildren = json_roots.get('children')
+        print("Root children are: ")
+        print(rootChildren)
+        rootChildren = json.dumps(rootChildren)
+        dict_roots = json.loads(rootChildren)
+        print(dict_roots)
 		# print(trimed_dirs)
         # json_str = json.dumps(trimed_dirs)
         # print(json_str)
         #json_str = json.dumps(dir_nodes)
         #print(json_str)
         data =  {
-					'tree_data': json_roots,
+					'tree_data': dict_roots,
 				}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
@@ -120,12 +127,13 @@ def filetree_post(request):
 def path_to_dict(path):
     d = {'name': os.path.basename(path)}
     if os.path.isdir(path):
-        d['type'] = "directory"
-        d['children'] = [path_to_dict(os.path.join(path,x)) for x in os.listdir(path)]
-        d['parentid'] = os.path.abspath(os.path.join(path, os.pardir))
         d['id'] = path
-    else:
-        d['type'] = "file"
+        #d['type'] = "directory"
+        d['children'] = [path_to_dict(os.path.join(path,x)) for x in os.listdir(path)]
+        #d['parentid'] = os.path.abspath(os.path.join(path, os.pardir))
+        #
+    #else:
+        #d['type'] = "file"
     return d
 
 
