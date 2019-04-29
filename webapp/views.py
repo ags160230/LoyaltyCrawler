@@ -101,10 +101,9 @@ def add_search_criteria(request, new_criterion):
 
 # Page that allows user to remove search criteria list & returns updated search criteria list
 @require_http_methods(["GET", "POST"])
-def remove_search_criteria(request, criterionToRemove):
+def remove_search_criteria(request, criterion_to_remove):
     try:
-        criterion_id = 0
-        CriteriaManager.delete_criterion(criterion_id)
+        CriteriaManager.delete_criterion(criterion_to_remove)
 
         return get_search_criteria(request)
 
