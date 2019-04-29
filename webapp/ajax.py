@@ -78,52 +78,30 @@ def filetree_post(request):
 	    # this line allows python to retrive data from ajax
 		# earlier, ajax stored the element from webpage into ajax-item
         webpageItem = request.POST.get('ajax-file-tree-root')
-        print("The item from page has a value of: " + webpageItem)
-        directory = 'C:/GitHub/a'
-        dir_nodes = []
-        file_nodes = []
-        # walk through directory
-        for root, directories, filenames in os.walk(directory):
-            dir_nodes.append(root)
-            #for directory in directories:
-                #print(os.path.join(root, directory))
-            dir_nodes.append(directories)
-            #for filename in filenames:
-                #print(os.path.join(root,filename))
-            file_nodes.append(filenames)
-		# this shows python maniuplating the string before sending back to ajax
-        starting_node = 'C:\\GitHub\\a'
-        current_node = starting_node
-        trimed_dirs = [["name: ", starting_node]]
-        trimed_nested = []
-        #trimed_dirs = recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
-        #list_files(starting_node)
-        #roots = get_roots(starting_node)
-        #formated_roots = format_roots(roots)
-        #print(formated_roots)
-        json_roots = path_to_dict(starting_node)
-        print("Dictionary is: ")
-        print(json_roots)
-        rootChildren = json_roots.get('children')
-        print("Root children are: ")
-        print(rootChildren)
-        rootChildren = json.dumps(rootChildren)
-        dict_roots = json.loads(rootChildren)
-        print(dict_roots)
-		# print(trimed_dirs)
-        # json_str = json.dumps(trimed_dirs)
-        # print(json_str)
-        #json_str = json.dumps(dir_nodes)
-        #print(json_str)
+        print("The item from page has a value of: ")
+        print(webpageItem)
+        directory = webpageItem
+		# create root_dictionary on the starting_node
+        root_dictionary = path_to_dict(directory)
+		# get the children nodes from the root node
+        children_dictionary = root_dictionary.get('children')
+        print("The dictionary's children from the root node are: ")
+        print(children_dictionary)
+		# convert dictionary to JSON string
+        json_string_children = json.dumps(children_dictionary)
+		# convert JSON string to JSON object
+        json_children = json.loads(json_string_children)
+        print(json_children)
         data =  {
-					'tree_data': dict_roots,
+					'tree_data': json_children,
 				}
+		# return data item, as formated above, with HttpResponse
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
 		
 
-
+# function to create a dictionary object from a specified path
 def path_to_dict(path):
     d = {'name': os.path.basename(path)}
     if os.path.isdir(path):
@@ -131,82 +109,6 @@ def path_to_dict(path):
         #d['type'] = "directory"
         d['children'] = [path_to_dict(os.path.join(path,x)) for x in os.listdir(path)]
         #d['parentid'] = os.path.abspath(os.path.join(path, os.pardir))
-        #
     #else:
         #d['type'] = "file"
     return d
-
-
-
-def format_roots(roots):	
-    i = 0
-    tree_data = ["name:" , roots[0]]
-    while i < len(roots): 
-        tree_data.append(["name:" , roots[i][0]])
-        i += 1
-    return tree_data
-	
-def get_roots(path):
-    roots = []
-    for root,d_names,f_names in os.walk(path):
-	    roots.append([root, f_names])
-    return roots
-		
-def recur_get_dir (current_node, starting_node, trimed_dirs, trimed_nested):
-    
-    dirs = os.listdir(current_node)
-    print(dirs)
-    for dir in dirs:
-        full_path = os.path.join(current_node, dir)
-        trimed_dir = dir
-        if (os.path.isdir(full_path)):
-            nested_dirs = os.listdir(full_path)
-            if len(nested_dirs) > 0:
-                nested_dir = nested_dirs[0]
-                starting_node = os.path.join(current_node, dir) 
-                current_node = os.path.join(full_path, nested_dir)
-                trimed_nested.append(["name:", nested_dir])
-                print("Nested: " + nested_dir)
-                recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
-				# recuversive call to start processes next level
-                # for nested_dir in nested_dirs:
-                    # print("nested:" + nested_dir)
-                    # full_nested_path = os.path.join(current_node, nested_dir)
-                    # print("nested path:" + full_nested_path)
-                    # current_node =  full_nested_path
-                    # trimed_nested.append(["name:", nested_dir])
-                    # recur_get_dir(current_node, starting_node, trimed_dirs, trimed_nested)
-				# # add nested tuple that represents entire nested level after recursion
-                # nested_tuple = [["name: ", trimed_dir], ["children:", trimed_nested]]
-                # trimed_dirs.append(nested_tuple)
-				# # clear trimed_nested list
-                # trimed_nested = []
-			# # add single dir to trimmed
-            else:
-				# add nested tuple that represents entire nested level after recursion
-                nested_tuple = [["name: ", current_node], ["children:", trimed_nested]]
-                #trimed_dirs.append(["name: ", trimed_dir])
-                trimed_dirs.append(nested_tuple)
-		# add file to trimed
-        else:
-			# add nested tuple that represents entire nested level after recursion
-            nested_tuple = [["name: ", current_node], ["children:", trimed_nested]]
-            trimed_dirs.append(nested_tuple)
-    # end of dirs at current level
-    return trimed_dirs
-    
-def list_files(startpath):
-    for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
-        indent = ' ' * 4 * (level)
-        previous_indent = ' ' * 4 * (level - 1)
-        print('{}{}{},'.format(indent, "{name: ", "'"+os.path.basename(root)+"'"))
-        if len(os.listdir(root)) > 0:
-            print('{}{}'.format(indent, "children: ["))
-        subindent = ' ' * 4 * (level + 1)
-        for f in files:
-            print('{}{}{},'.format(subindent, "{name: ",  "'"+f+"'}"))
-        #if len(os.listdir(root)) > 0:
-            #print('{}{}'.format(indent, "]"))
-            #print('{}{}'.format(indent, "}"))	
-    #print('{}'.format("}"))
