@@ -2,7 +2,6 @@
 // Globals
 let amount_of_sessions = 3;
 
-
 function setUpModal(){
     // Get the modal
     var modal = document.getElementById('myModal');
@@ -28,12 +27,50 @@ window.onclick = function(event) {
 } 
 }
 
-function main(){
-    setUpModal();
-    setUpStartSession();
-    setUpViewCriteria();
+function setUpAddCriteriaButton(){
+    document.getElementById("add-criteria-button").onclick = function(){
+
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let dev_root = "http://127.0.0.1:8000/";
+        let local_url = "webapp/criteria/add";
+        let url = dev_root + local_url; 
+
+        oReq.onload = function(e) {
+        let result = oReq.response ; 
+            let table_start = document.getElementById("nav-bar-start");
+            for(var key in result) {
+                let link = document.createElement("div");
+                link.innerHTML = result[key];
+                table_start.appendChild(link);
+             }
+        }
+
+        oReq.open("GET", url);
+        oReq.send();
+    };
+
 }
-main();
+
+function setUpGetSession(){
+    $("#get-session-button").change(function(){
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let dev_root = "http://127.0.0.1:8000/webapp/";
+        let selected_session = $(this).val();
+        let local_url = "get_session/" + selected_session;
+        let url = dev_root + local_url;
+
+        oReq.onload = function(e) {
+        let result = oReq.response ; 
+        buildDataTable(result);
+        }
+
+        oReq.open("GET", url);
+        oReq.send();
+    });
+}
+
 
 function setUpViewCriteria(){
     document.getElementById("criteria-button").onclick = function(){
@@ -53,7 +90,6 @@ function setUpViewCriteria(){
                 let link = document.createElement("div");
                 link.innerHTML = result[key];
                 table_start.appendChild(link);
-                // addLinkToTable(table_start_node, result[key].link, key);
              }
         }
 
@@ -62,19 +98,44 @@ function setUpViewCriteria(){
     };
 
 }
+function buildDataTable(result){
+        
+    let formatted = [];
+    for(var key in result) {
+        let element = {
+            'id' : key,
+            'link' : '<a target="_blank" href=' + result[key] + '>' + result[key] + "</a>"
+        }
+        formatted.push(element); 
+     }
+    
+        $('#table_id').DataTable({
+            destroy: true,
+            data: formatted,
+            columns: [
+                { data: 'id' },
+                { data: 'link' }
+            ],
+            
+            paging: true,
+            scrollY: 300,
+            buttons: [
+                'csvHtml5', 'pdfHtml5'
+            ],
+            dom: 'Bfrtip',
+        });
+}
+
 
 function setUpStartSession(){
 
-
     document.getElementById("session-button").onclick = function(){
-
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/";
         let local_url = "start/" + (amount_of_sessions+1);
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
-        // console.log(url);
         oReq.onload = function(e) {
         let result = oReq.response ; //jQuery.parseJSON(oReq.response);
         buildDataTable(result);
@@ -84,34 +145,6 @@ function setUpStartSession(){
         oReq.send();
     };
     
-    function buildDataTable(result){
-        
-        let formatted = [];
-        for(var key in result) {
-            formatted.push({
-                'id' : key,
-                'link' : '<a target="_blank" href=' + result[key].link + '>' + result[key].link + "</a>"
-            }); 
-         }
-         console.log(formatted);
-        
-        $(document).ready( function () {
-            $('#table_id').DataTable({
-                data: formatted,
-                columns: [
-                    { data: 'id' },
-                    { data: 'link' }
-                ],
-                
-                paging: true,
-                scrollY: 300,
-                buttons: [
-                    'csvHtml5', 'pdfHtml5'
-                ],
-                dom: 'Bfrtip',
-            });
-        } );
-    }
     
     
     // Used with no plugins
@@ -170,28 +203,11 @@ function setUpStartSession(){
     }
 }
 
-
-
-var toggler = document.getElementsByClassName("caret");
-    var i;
-
-    for (i = 0; i < toggler.length; i++) {
-      toggler[i].addEventListener("click", function() {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("caret-down");
-      });
+    function main(){
+        setUpModal();
+        setUpStartSession();
+        setUpViewCriteria();
+        setUpGetSession();
     }
-
-    function isSessionActive() {
-        document.getElementById("session-button").onclick = function(){
-            console.log("WORKInG");
-                  };
-      $(document).ready(function(){
-          
-        $('.session-button' ).click(function(){
-          $('.session-button').html('Stop Web Crawler Session');
-          $('.session-button').css('background-color', 'red');
-          $('.session-button:hover').css('background-color', '#f63c3c');
-        });
-      });
-    }
+    main();
+    
