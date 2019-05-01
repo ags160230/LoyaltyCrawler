@@ -1,63 +1,63 @@
-
 // Globals
-let amount_of_sessions = 3;
+let amount_of_sessions = 4;
 
-function setUpModal(){
+function setUpModal() {
     // Get the modal
     var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-var btn = document.getElementById("criteria-button");
+    // Get the button that opens the modal
+    var btn = document.getElementById("criteria-button");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal
+    // When the user clicks on the button, open the modal
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-} 
-}
-
-function setUpAddCriteriaButton(){
-    document.getElementById("add-criteria-button").onclick = function(){
+function setUpAddCriteriaButton() {
+    document.getElementById("add-criteria-button").onclick = function () {
 
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let keyword_to_add = document.getElementById("keywordInsert").value;
         let dev_root = "http://127.0.0.1:8000/";
         let local_url = "webapp/criteria/add/" + keyword_to_add;
-        let url = dev_root + local_url; 
+        let url = dev_root + local_url;
 
-        oReq.onload = function(e) {
-            let result = oReq.response ;
-            let table_start = document.getElementById("nav-bar-start");
-            while (table_start.hasChildNodes()) {
-                table_start.removeChild(table_start.lastChild);
-            }
-            for(var key in result) {
-                let link = document.createElement("div");
-                link.innerHTML = result[key];   
-                table_start.appendChild(link);
-             }
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            // let table_start = document.getElementById("nav-bar-start");
+            buildKeyWordTable(result);
         }
 
         oReq.open("GET", url);
         oReq.send();
     };
+}
+
+function removeCriteria(e) {
+    console.log(e);
+    // this.text
+}
+
+function setUpRemoveSession(){
 
 }
 
-function setUpGetSession(){
-    $("#get-session-button").change(function(){
+function setUpGetSession() {
+    $("#get-session-button").change(function () {
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
@@ -65,9 +65,9 @@ function setUpGetSession(){
         let local_url = "get_session/" + selected_session;
         let url = dev_root + local_url;
 
-        oReq.onload = function(e) {
-        let result = oReq.response ; 
-        buildDataTable(result);
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            buildDataTable(result);
         }
 
         oReq.open("GET", url);
@@ -75,9 +75,8 @@ function setUpGetSession(){
     });
 }
 
-
-function setUpViewCriteria(){
-    document.getElementById("criteria-button").onclick = function(){
+function setUpViewCriteria() {
+    document.getElementById("criteria-button").onclick = function () {
         var modal = document.getElementById('myModal');
         modal.style.display = "block";
 
@@ -85,16 +84,12 @@ function setUpViewCriteria(){
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/";
         let local_url = "webapp/criteria";
-        let url = dev_root + local_url; 
+        let url = dev_root + local_url;
 
-        oReq.onload = function(e) {
-        let result = oReq.response ; 
-            let table_start = document.getElementById("nav-bar-start");
-            for(var key in result) {
-                let link = document.createElement("div");
-                link.innerHTML = result[key];
-                table_start.appendChild(link);
-             }
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            buildKeyWordTable(result);
+
         }
 
         oReq.open("GET", url);
@@ -102,13 +97,14 @@ function setUpViewCriteria(){
     };
 
 }
-function buildDataTable(result){
-        
+
+function buildDataTable(result) {
+
     let formatted = [];
-    for(var key in result) {
+    for (var key in result) {
         let element = {
-            'id' : key,
-            'link' : '<a target="_blank" href=' + result[key] + '>' + result[key] + "</a>"
+            'id': key,
+            'link': '<a target="_blank" href=' + result[key] + '>' + result[key] + "</a>"
         }
         formatted.push(element); 
     }
@@ -160,27 +156,56 @@ function buildDataTable(result){
     } );
 }
 
+function buildKeyWordTable(result) {
 
-function setUpStartSession(){
+    let formatted = [];
+    for (var key in result) {
+        let element = {
+            'Keyword': '<a>' + result[key] + "</a>",
+            'Remove': '<a class="remove-button"  onclick="removeCriteria()"  >' + "Remove" + "</a>"
+        }
+        formatted.push(element);
+    }
 
-    document.getElementById("session-button").onclick = function(){
+    $('#keyword_table').DataTable({
+        destroy: true,
+        data: formatted,
+        columns: [{
+                data: 'Keyword'
+            },
+            {
+                data: 'Remove'
+            }
+        ],
+        buttons: [],
+        paging: true,
+        scrollY: 250,
+        dom: 'Bfrtip',
+    });
+
+}
+
+
+function setUpStartSession() {
+
+    document.getElementById("session-button").onclick = function () {
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
-        let local_url = "start_session/" + (amount_of_sessions+1);
+        let local_url = "start_session/" + (amount_of_sessions + 1);
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
-        oReq.onload = function(e) {
-        let result = oReq.response ; //jQuery.parseJSON(oReq.response);
-        // buildDataTable(result);
-        console.log(result);
-
+        oReq.onload = function (e) {
+            let result = oReq.response; //jQuery.parseJSON(oReq.response);
+            // buildDataTable(result);
+            console.log(result);
+            setUpSessionSelector();
         }
         oReq.open("GET", url);
         oReq.send();
     };
-    
-    function addLinkToTable(tbody_node, url, key){
+
+    function addLinkToTable(tbody_node, url, key) {
         let tr_node = document.createElement("TR");
         let th_node = document.createElement("TH");
         th_node.scope = "row";
@@ -189,42 +214,61 @@ function setUpStartSession(){
         let td_node = document.createElement("TD");
         let link_node = document.createElement("a");
         link_node.href = url;
-        link_node.target = "_blank"; 
+        link_node.target = "_blank";
         link_node.innerText = url;
         td_node.appendChild(link_node);
         tr_node.appendChild(td_node);
-    
+
         tbody_node.appendChild(tr_node);
     }
 }
 
-function setUpSessionSelector(){
-    let current_session = 1;
-
+function setUpSessionSelector() {
     var oReq = new XMLHttpRequest();
-        oReq.responseType = "json";
-        let dev_root = "http://127.0.0.1:8000/webapp/";
-        let local_url = "check_last_session_index";
-        let url = dev_root + local_url; 
+    oReq.responseType = "json";
+    let dev_root = "http://127.0.0.1:8000/webapp/";
+    let local_url = "check_last_session_index";
+    let url = dev_root + local_url;
 
-        oReq.onload = function(e) {
-        let result = oReq.response ; 
-            console.log(result);
+    oReq.onload = function (e) {
+        let result = oReq.response;
+        console.log(result[0]);
+        amount_of_sessions = result[0];
+        let i = 1;
+        let start_node = document.getElementById("get-session-button");
+
+        while (start_node.hasChildNodes()) {
+            start_node.removeChild(start_node.lastChild);
         }
 
-        oReq.open("GET", url);
-        oReq.send();
+        let default_option = document.createElement("option");
+        default_option.text = "None Selected";
+        default_option.selected = true;
+        start_node.appendChild(default_option);
+
+        while (i < amount_of_sessions + 1) {
+            let option = document.createElement("option");
+            option.value = i;
+            option.text = "Session " + i;
+            start_node.appendChild(option);
+            // id="get-session-button";
+            i += 1;
+        }
+    }
+
+    oReq.open("GET", url);
+    oReq.send();
 
 }
 
-    function main(){
-        
-        setUpSessionSelector();
-        setUpModal();
-        setUpStartSession();
-        setUpViewCriteria();
-        setUpGetSession();
-        setUpAddCriteriaButton();
-    }
-    main();
-    
+function main() {
+
+    setUpSessionSelector();
+    setUpModal();
+    setUpStartSession();
+    setUpViewCriteria();
+    setUpGetSession();
+    setUpAddCriteriaButton();
+    setUpRemoveSession();
+}
+main();
