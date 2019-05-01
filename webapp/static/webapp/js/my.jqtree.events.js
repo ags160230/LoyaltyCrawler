@@ -26,7 +26,7 @@ $('#ajax-nested-jqtree').on(
 			// if parent already has existing child with same name
 			if (child_at_destination.name == moved_node.name){
 				move = -1;
-				confirm('Directory already has a file named ' + child_at_destination );
+				confirm('Directory already has a file named ' + child_at_destination.name);
 			}
 		}
 
