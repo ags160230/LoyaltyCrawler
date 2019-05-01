@@ -111,23 +111,53 @@ function buildDataTable(result){
             'link' : '<a target="_blank" href=' + result[key] + '>' + result[key] + "</a>"
         }
         formatted.push(element); 
-     }
+    }
     
-        $('#table_id').DataTable({
-            destroy: true,
-            data: formatted,
-            columns: [
-                { data: 'id' },
-                { data: 'link' }
-            ],
-            
-            paging: true,
-            scrollY: 300,
-            buttons: [
-                'csvHtml5', 'pdfHtml5'
-            ],
-            dom: 'Bfrtip',
-        });
+    $('#table_id').DataTable({
+        destroy: true,
+        data: formatted,
+        columns: [
+            { data: 'id' },
+            { data: 'link' }
+        ],
+        
+        paging: true,
+        scrollY: 300,
+        buttons: [
+            'csvHtml5', 'pdfHtml5'
+        ],
+        dom: 'Bfrtip',
+        "lengthChange": true,
+        "lengthMenu": [ [5, 10, 25, 50, -1], [5, 10, 25, 50, "All"] ],
+        "pageLength": 7,
+        autofill: true
+
+
+        //"lengthChange": true,
+        //"lengthMenu": [5, 10, 25, 50, 75, 100, "All" ],
+        //"pageLength": 5
+    });
+
+    // Javascript to delete item from table locally
+    // CSV and PDF button print whatever is locally shown on user's display
+    // This function does not delete permentally
+    $(document).ready(function() {
+        var table = $('#table_id').DataTable();
+     
+        $('#table_id tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+     
+        $('#deleteRowButton').click( function () {
+            table.row('.selected').remove().draw( false );
+        } );
+    } );
 }
 
 
