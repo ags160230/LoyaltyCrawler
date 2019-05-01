@@ -39,20 +39,23 @@
                 <form class="form-inline was-validated">
                   <label for="keywordInsert" style="padding-right: 5px;">Insert new Keyword to Keyword List: </label>
                   <input class="form-control mr-sm-2" type="text" id="keywordInsert" placeholder="Insert New Keyword" name="keywordInsert" required>
-                  <div id="add-criteria-button" class="btn btn-outline-success my-2 my-sm-0" >Submit</div>
+                  <div id="add-criteria-button" class="btn btn-outline-success my-2 my-sm-0" >Insert</div>
                   <div class="valid-feedback">Valid</div>
                   <div class="invalid-feedback">Please fill out this field.</div>
                 </form>
               </div>
               
-              <div class="navbar-custom">
-                <div class="container">
-                  <h5>Table of existing keywords</h5>
-                  <nav id="nav-bar-start" class="navbar navbar-expand-lg navbar-light bg-light">
-                    <!-- <a class="navbar-brand" href="#">Table Navbar</a> -->
-                  </nav>
-                </div>
-            </div>
+                  <h4>Existing keywords</h4>
+                  <table id="keyword_table" class="table display table-striped table-bordered table-hover">
+                      <thead>
+                          <tr>
+                              <th>Keyword</th>
+                              <th>Remove</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
           </div>
         </div> 
           <div class="ui-box content-page">
