@@ -1,29 +1,35 @@
 
 // ** NOTES TO DEVELOPERS, AJAX 'Post' REQUESTS DEPEND ON THE CSRF TOKEN
-// ** DO NOT REMOVE THE $.ajaxSetup AS IT RETRIVES THE TOKEN REQUIRED
-	
+// ** DO NOT REMOVE THE $.ajaxSetup AS IT CALLS METHODS TO RETRIEVE THE TOKEN REQUIRED
+// ** ALSO DO NOT REMOVE the methods required to retrieve the token
+
 // https://godjango.com/18-basic-ajax/
 $(document).ready(function() {
 	
-	// AJAX POST filetree
-	$('#ajax-filetree-post').click(function(){
+	// AJAX POST operation
+	// this method is called on the expand-tree-button click
+	$('#ajax-filetree-post-operation-expand-tree-button').click(function(){
 		
 		// print to browswer console as santiy check that this method is called
-		console.log('ajax-filetree-post called');
+		console.log('ajax-filetree-post-operation-expand-tree-button clicked');
 		// print the item retrived from the page
-		console.log( 'Root is: ' + $(".html-file-tree-root-text-box").val());
+		console.log( 'Value from webpage Root text box is: ' + $(".html-file-tree-root-text-box").val());
 
+		// this method is the link between here and ajax.py python file
+		// upon invoking function(data), the ajax request is sent ajax.py
+		// if the request is successful, then populate the nested-jqtree with data returned from ajax.py file
 		$.ajax({
 			type: "POST",
-			// note how the url differs, there is a trailing slash
+			// note how the url differs from a GET operation, there is a trailing slash
 			url: "ajax/filetree/post/",
 			dataType: "json",
-			data: { "ajax-file-tree-root": $(".html-file-tree-root-text-box").val() },
+			// store item from html page into this file
+			// function will pass data to the corresponding method in ajax.py during the request
+			data: { "my-ajax-file-tree-root": $(".html-file-tree-root-text-box").val() },
+			// on sucess, populate the nested-jqtree on the webpage with the data returned from python
 			success: function(data) {
 				// access tree_data from the data returned
 				console.log(data.tree_data);
-				//var source = builddata(data.tree_data);
-				//console.log(source);
 				$('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py
 					data: data.tree_data,
@@ -34,7 +40,7 @@ $(document).ready(function() {
 		
 	});
 	
-	// ** KEEP THIS CODE since Post methods rely on the token
+	// ** KEEP THIS CODE since Post methods rely on the CSRF token
 	
     // CSRF code
     function getCookie(name) {

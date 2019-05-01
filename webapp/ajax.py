@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
 from .file_operations import *
 import os
+from django.conf import settings
 
 # get is used when you don't need to access the webpage elements
 # post is used to access the webpage elements
@@ -11,7 +12,9 @@ import os
 @require_http_methods(["POST"])
 def filetree_move(request):
 
-    debugMode = os.environ.get('DEBUG', False)
+	# determine if we are in debug mode for print statements and sanity checks
+    debugMode = settings.DEBUG
+	
 	# print that this function was called
     if debugMode == True:
         print("called: filetree_move")
@@ -47,7 +50,9 @@ def filetree_move(request):
 @require_http_methods(["POST"])	
 def filetree_post(request):
 
-    debugMode = os.environ.get('DEBUG', False)
+	# determine if we are in debug mode for print statements and sanity checks
+    debugMode = settings.DEBUG
+	
 	# print that this function was called
     if debugMode == True:
         print("called: filetree_post")
@@ -55,9 +60,9 @@ def filetree_post(request):
 		
 	# logic for handling request	
     if request.is_ajax() and request.POST:
-	    # this line allows python to retrive data from ajax
-		# earlier, ajax stored the element from webpage into ajax-item
-        webpageItemFromAJAX = request.POST.get('ajax-file-tree-root')
+	    # this line allows python to retrive data from my.ajax.py
+		# earlier, ajax stored the element from webpage into my-ajax-file-tree-root
+        webpageItemFromAJAX = request.POST.get('my-ajax-file-tree-root')
         directory = webpageItemFromAJAX
 		# create root_dictionary on the starting_node
         root_dictionary = path_to_dict(directory)
