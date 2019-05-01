@@ -26,9 +26,13 @@ $(document).ready(function() {
 			// store item from html page into this file
 			// function will pass data to the corresponding method in ajax.py during the request
 			data: { "my-ajax-file-tree-root": $(".html-file-tree-root-text-box").val() },
-			// on sucess, populate the nested-jqtree on the webpage with the data returned from python
+			
+			// on AJAX request success 
+			// populate the nested-jqtree on the webpage with the data returned from python
+			// python function is tied to ajax request via the urls.py file
+			// in this case the url is ajax/filetree/post/ and the function to call is ajax.filetree_post
 			success: function(data) {
-				// access tree_data from the data returned
+				// access tree_data from the data returned by python
 				console.log(data.tree_data);
 				$('#ajax-nested-jqtree').tree({
 					// this is the data manipulated from filetree_post method in ajax.py

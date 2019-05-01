@@ -20,19 +20,29 @@ $('#ajax-nested-jqtree').on(
         if (confirm('Really move?')) {
             event.move_info.do_move();
 			
+			// has to be a post call so we can edit data
 			// do ajax request to return to python
 			$.ajax({
 				type: "POST",
 				url: "ajax/filetree/move/",
-				// has to be a post call so we can edit data
+				// assemble data to send to python
+				// DON'T send python the node objects themselves
+				// this will mess up the jqtree objects
 				data: 	{ 
-							"moved_node_name": moved_node.name,
-							"target_node_name": target_node.name,
-							"position": position,
-							"previous_parent_name": previous_parent.name,
+							"my_jq_tree_moved_node_id": moved_node.id,
+							"my_jq_tree_target_node_id": target_node.id,
+							"my_jq_tree_position": position,
+							"my_jq_tree_previous_parent_id": previous_parent.id,
 						},
-				//data: { "moved-node": moved_node },
+						
+				// on AJAX request success 
+				// call python function to move the file
+				// python function is tied to ajax request via the urls.py file
+				// in this case the url is ajax/filetree/move and the function to call is ajax.filetree_move
 				success: function(data) {
+					// at this point the data has been returned by python to AJAX
+					// no need to do anything with it, since jqtree handles the webpage tree nodes
+					console.log("Data returned from python" + data.message);
 			}
 			});
         }
