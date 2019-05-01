@@ -1,6 +1,6 @@
 
 // Globals
-let amount_of_sessions = 3;
+let amount_of_sessions = 4;
 
 function setUpModal(){
     // Get the modal
@@ -53,7 +53,6 @@ function setUpAddCriteriaButton(){
         oReq.open("GET", url);
         oReq.send();
     };
-
 }
 
 function setUpGetSession(){
@@ -74,7 +73,6 @@ function setUpGetSession(){
         oReq.send();
     });
 }
-
 
 function setUpViewCriteria(){
     document.getElementById("criteria-button").onclick = function(){
@@ -125,7 +123,7 @@ function buildDataTable(result){
             scrollY: 300,
             buttons: [
                 'csvHtml5', 'pdfHtml5'
-            ],
+            ],  
             dom: 'Bfrtip',
         });
 }
@@ -144,7 +142,7 @@ function setUpStartSession(){
         let result = oReq.response ; //jQuery.parseJSON(oReq.response);
         // buildDataTable(result);
         console.log(result);
-
+        setUpSessionSelector();
         }
         oReq.open("GET", url);
         oReq.send();
@@ -169,8 +167,6 @@ function setUpStartSession(){
 }
 
 function setUpSessionSelector(){
-    let current_session = 1;
-
     var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
@@ -178,8 +174,29 @@ function setUpSessionSelector(){
         let url = dev_root + local_url; 
 
         oReq.onload = function(e) {
-        let result = oReq.response ; 
-            console.log(result);
+        let result = oReq.response; 
+            console.log(result[0]);
+            amount_of_sessions = result[0];
+            let i = 1;
+            let start_node = document.getElementById("get-session-button");
+            
+            while (start_node.hasChildNodes()) {
+                start_node.removeChild(start_node.lastChild);
+            }
+
+            let default_option = document.createElement("option");
+            default_option.text = "None Selected";
+            default_option.selected = true;
+            start_node.appendChild(default_option);
+ 
+            while (i < amount_of_sessions + 1 ){
+                let option = document.createElement("option");
+                option.value = i;
+                option.text = "Session " + i;
+                start_node.appendChild(option);
+                // id="get-session-button";
+                i+=1;
+            }
         }
 
         oReq.open("GET", url);
