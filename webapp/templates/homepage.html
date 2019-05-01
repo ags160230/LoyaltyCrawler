@@ -138,15 +138,22 @@
             </div>
 			<!-- Smaller subsection that displays file tree -->
             <div class="info-box">
-              <a href="#">File Tree</a>
-              <h6> Root: </h6>
-			  <!-- Token created in my.ajax.py used for Ajax post methods -->
-			  {% csrf_token %}
-			  <input class="html-file-tree-root-text-box" type="text" placeholder="Type a folder path...">
+			  <div id="file-tree">
+				<a href="#">File Tree:</a>
+				<!-- Token created in my.ajax.py used for Ajax post methods -->
+				{% csrf_token %}
+				<div id="file-tree-header" class="display-inline">
+					<h6> Root: </h6>
+				</div>
+				<div id="file-tree-text-box" class="display-inline">
+					<!-- my.ajax accesses this class -->
+					<input class="html-file-tree-root-text-box" type="text" placeholder="Type a folder path...">
+				</div>
 				<div id="ajax-filetree-post-operation-expand-tree-button" class="btn btn-sm expand-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Expand Tree</div>
-				<div id="ajax-nested-jqtree" class="demo"></div>
+				<div id="ajax-nested-jqtree"></div>
 				<div id="ajax-filetree-get-operation-collapse-tree-button" class="btn btn-sm collapse-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Collapse Tree</div>
-            </div>
+			   </div> <!-- end file tree div -->
+			</div> <!-- end file tree info box -->
           </div>
         </div>
       </div>
