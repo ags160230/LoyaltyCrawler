@@ -104,8 +104,8 @@ def path_to_dict(path):
     d['id'] = path
     if os.path.isdir(path):
         d['children'] = [path_to_dict(os.path.join(path,x)) for x in os.listdir(path)]
-        #d['type'] = "directory"
+        d['type'] = "directory"
         #d['parentid'] = os.path.abspath(os.path.join(path, os.pardir))
-    #else:
-        #d['type'] = "file"
+    else:
+        d['type'] = "file"
     return d

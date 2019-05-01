@@ -31,7 +31,7 @@ $('#ajax-nested-jqtree').on(
 		}
 		
 		// check is path is a file
-		if (isFile(target_node.id)){
+		if (target_node.type == 'file'){
 			move = -1;
 			confirm('Specified destination directory is a file. Move canceled');
 		}
@@ -68,27 +68,3 @@ $('#ajax-nested-jqtree').on(
         }
     }
 );
-
-function tryGetPath(pathItem) {
-    const isPosix = pathItem.includes("/");
-    if ((isPosix && pathItem.endsWith("/")) ||
-        (!isPosix && pathItem.endsWith("\\"))) {
-        pathItem = pathItem + ".";
-    }
-    return pathItem;
-}
-// If a path ends with a current directory identifier, it is a path! /c/dos/run/. and c:\dos\run\.
-function isDirectory(pathItem) {
-    const isPosix = pathItem.includes("/");
-    if (pathItem === "." || pathItem ==- "..") {
-        pathItem = (isPosix ? "./" : ".\\") + pathItem;
-    }
-    return (isPosix ? pathItem.endsWith("/.") || pathItem.endsWith("/..") : pathItem.endsWith("\\.") || pathItem.endsWith("\\.."));
-} 
-// If a path is not a directory, and it isn't empty, it must be a file
-function isFile(pathItem) {
-    if (pathItem === "") {
-        return false;
-    }
-    return !isDirectory(pathItem);
-}
