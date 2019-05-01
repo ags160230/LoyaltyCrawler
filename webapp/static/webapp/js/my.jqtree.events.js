@@ -11,13 +11,27 @@ $('#ajax-nested-jqtree').on(
         var previous_parent = event.move_info.previous_parent;
 		
 		// print to console
+		console.log('new build');
+		
         console.log('moved_node', moved_node);
         console.log('target_node', target_node);
         console.log('position', position);
         console.log('previous_parent', previous_parent);
 		
-		// let user confirm move
-        if (confirm('Really move?')) {
+
+		var move = 1;
+		var i;
+		for (i = 0; i < target_node.children.length; i++) { 
+			child_at_destination = target_node.children[i];
+			// if parent already has existing child with same name
+			if (child_at_destination.name == moved_node.name){
+				move = -1;
+				confirm('Directory already has a file named ' + child_at_destination );
+			}
+		}
+
+		// do move
+        if (move == 1) {
             event.move_info.do_move();
 			
 			// has to be a post call so we can edit data
