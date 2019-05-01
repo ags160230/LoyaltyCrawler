@@ -140,40 +140,15 @@
             <div class="info-box">
               <a href="#">File Tree</a>
               <h6> Root: </h6>
+			  <!-- Token created in my.ajax.py used for post methods -->
+			  {% csrf_token %}
 			  <input class="html-file-tree-root" type="text" placeholder="Type a folder path...">
 				<div id="ajax-filetree-post" class="btn btn-sm expand-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Expand Tree</div>
 				<div id="ajax-nested-jqtree" class="demo"></div>
 				<div id="collapse-tree-button" class="btn btn-sm collapse-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Collapse Tree</div>
             </div>
-			<div id="jstree-callback" class="demo"></div>
-			<h3>File Tree Root:</h3>
-            <div style="margin: 10px 0px 10px 0px; bottom: 0">
-              <p style="padding: 6px 8px 6px 16px;">Company Information @Copyright 2019</p>
-			<div class="container">
-				<div class="container">
-					<h3>TODO:</h3>
-					<ul>
-						<li>Take out trash</li>
-					</ul>
-					<div id="ajax-demo-get" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Get from python</div>
-				</div>
-				<div class="container">
-					<h3>Add Todo:</h3>
-					{% csrf_token %}
-					<div>
-						<label for="todo">
-							<input class="todo-item" type="text" placeholder="Todo Item">
-						</div>
-					</div>
-					<div id="ajax-demo-post" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Post from page</div>
-				</div>
-			</div>
-
-            
           </div>
         </div>
-
-
       </div>
     </div>
 

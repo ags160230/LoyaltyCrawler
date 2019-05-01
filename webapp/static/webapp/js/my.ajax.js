@@ -32,7 +32,8 @@ $(document).ready(function() {
 		
 	});
 	
-
+	// ** KEEP THIS CODE since Post methods rely on the token
+	
     // CSRF code
     function getCookie(name) {
         var cookieValue = null;
