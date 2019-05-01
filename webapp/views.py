@@ -7,24 +7,6 @@ import os, shutil
 from .crawler.crawler import *
 
 
-"""
-def index(request):
-    return render(request, "form.html")
-
-
-@require_http_methods(["GET", "POST"])
-def search(request):
-    if request.method == 'POST':
-        a_id = request.POST.get('textfield', None)
-
-        return render(view_artifact(request, a_id), "form.html")
-
-    # else:
-        # return render(request, 'form.html')
-
-"""
-
-
 # i.e. test home page
 def start_session(request, search_criteria_id):
     execute_session(search_criteria_id)
@@ -34,6 +16,7 @@ def start_session(request, search_criteria_id):
 def delete_session(request, session_id):
     ArchiveManager.delete_session(session_id)
     return HttpResponse("deleted session: " + str(session_id))
+
 
 def check_last_session_index(request):
     new_session_index = ArchiveManager.get_last_session_id()
@@ -107,10 +90,9 @@ def add_search_criteria(request, new_criterion):
 
 # Page that allows user to remove search criteria list & returns updated search criteria list
 @require_http_methods(["GET", "POST"])
-def remove_search_criteria(request, criterionToRemove):
+def remove_search_criteria(request, criterion_to_remove):
     try:
-        criterion_id = 0
-        CriteriaManager.delete_criterion(criterion_id)
+        CriteriaManager.delete_criterion(criterion_to_remove)
 
         return get_search_criteria(request)
 
@@ -121,8 +103,6 @@ def remove_search_criteria(request, criterionToRemove):
 # Function to start a session, receive artifact url list from scrapy, and store the url's in the DB
 def execute_session(search_criteria_id):
     try:
-        # get sesearch_criteria_id through user I/O from frontend
-
         # CriteriaManager.reset_criterion_to_use()
         CriteriaManager.set_criterion_to_use(search_criteria_id)
         run_crawler()
