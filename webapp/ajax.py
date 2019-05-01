@@ -10,8 +10,14 @@ import os
 # filtree get function for ajax
 @require_http_methods(["POST"])
 def filetree_move(request):
-    print("called: filetree_move")
-    print(request)
+
+    debugMode = os.environ.get('DEBUG', False)
+	# print that this function was called
+    if debugMode == True:
+        print("called: filetree_move")
+        print(request)
+		
+	# logic for handling request	
     if request.is_ajax() and request.POST:
 	    # this line allows python to retrive data from ajax
 		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
@@ -20,16 +26,19 @@ def filetree_move(request):
         position = request.POST.get('position')
         previous_parent = request.POST.get('previous_parent_name')
 		
-        print("moved_node_name: " + moved_node)
-        print("target_node_name: " + target_node)
-        print("position: " + position)
-        print("previous_parent_name: " + previous_parent)
 		# test copy
         source = 'C:/GitHub/a/a1.txt'
         destination = 'C:/GitHub/a/a2.txt'
         copy_file(source, destination)		
 		# this shows python maniuplating the string before sending back to ajax
         data = {'message': moved_node + " then python edited the string"}
+		
+		# print data during debug mode before return
+        if debugMode == True:
+            print("moved_node_name: " + moved_node)
+            print("target_node_name: " + target_node)
+            print("position: " + position)
+            print("previous_parent_name: " + previous_parent)
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:
         raise Http404
@@ -37,28 +46,36 @@ def filetree_move(request):
 # filtree post function for ajax
 @require_http_methods(["POST"])	
 def filetree_post(request):
-    print("called: filetree_post")
+
+    debugMode = os.environ.get('DEBUG', False)
+	# print that this function was called
+    if debugMode == True:
+        print("called: filetree_post")
+        print(request)
+		
+	# logic for handling request	
     if request.is_ajax() and request.POST:
 	    # this line allows python to retrive data from ajax
 		# earlier, ajax stored the element from webpage into ajax-item
         webpageItemFromAJAX = request.POST.get('ajax-file-tree-root')
-        print("The item from page, which was stored to ajax, has a value of: ")
-        print(webpageItemFromAJAX)
         directory = webpageItemFromAJAX
 		# create root_dictionary on the starting_node
         root_dictionary = path_to_dict(directory)
 		# get the children nodes from the root node
         children_dictionary = root_dictionary.get('children')
-        print("The dictionary's children from the root node are: ")
-        print(children_dictionary)
 		# convert dictionary to JSON string
         json_string_children = json.dumps(children_dictionary)
 		# convert JSON string to JSON object
         json_children = json.loads(json_string_children)
-        print(json_children)
         data =  {
 					'tree_data': json_children,
 				}
+		# print data during debug mode before return
+        if debugMode == True:
+            print("The item from page, which was stored to ajax, has a value of: ")
+            print(webpageItemFromAJAX)
+            print("The dictionary's children from the root node are: ")
+            print(children_dictionary)	
 		# return data item, as formated above, with HttpResponse
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:

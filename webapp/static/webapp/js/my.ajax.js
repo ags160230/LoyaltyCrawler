@@ -1,14 +1,16 @@
 
 // ** NOTES TO DEVELOPERS, AJAX 'Post' REQUESTS DEPEND ON THE CSRF TOKEN
-// ** O NOT REMOVE THE $.ajaxSetup AS IT RETRIVES THE TOKEN REQUIRED
+// ** DO NOT REMOVE THE $.ajaxSetup AS IT RETRIVES THE TOKEN REQUIRED
 	
 // https://godjango.com/18-basic-ajax/
 $(document).ready(function() {
 	
 	// AJAX POST filetree
 	$('#ajax-filetree-post').click(function(){
+		
 		// print to browswer console as santiy check that this method is called
 		console.log('ajax-filetree-post called');
+		// print the item retrived from the page
 		console.log( 'Root is: ' + $(".html-file-tree-root").val());
 
 		$.ajax({
