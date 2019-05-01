@@ -11,14 +11,14 @@ $(document).ready(function() {
 		// print to browswer console as santiy check that this method is called
 		console.log('ajax-filetree-post called');
 		// print the item retrived from the page
-		console.log( 'Root is: ' + $(".html-file-tree-root").val());
+		console.log( 'Root is: ' + $(".html-file-tree-root-text-box").val());
 
 		$.ajax({
 			type: "POST",
 			// note how the url differs, there is a trailing slash
 			url: "ajax/filetree/post/",
 			dataType: "json",
-			data: { "ajax-file-tree-root": $(".html-file-tree-root").val() },
+			data: { "ajax-file-tree-root": $(".html-file-tree-root-text-box").val() },
 			success: function(data) {
 				// access tree_data from the data returned
 				console.log(data.tree_data);
