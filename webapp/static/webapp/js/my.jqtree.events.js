@@ -1,4 +1,4 @@
-// events for 
+// events for ajax-nested-jqtree which is built in the my.ajax file
 $('#ajax-nested-jqtree').on(
     'tree.move',
     function(event) {
