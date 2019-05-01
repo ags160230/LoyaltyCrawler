@@ -26,10 +26,16 @@ $('#ajax-nested-jqtree').on(
 			// if parent already has existing child with same name
 			if (child_at_destination.name == moved_node.name){
 				move = -1;
-				confirm('Directory already has a file named ' + child_at_destination.name);
+				confirm('Specified destination directory already has a file named ' + child_at_destination.name +'. Move canceled.');
 			}
 		}
-
+		
+		// check is path is a file
+		if (isFile(target_node.id)){
+			move = -1;
+			confirm('Specified destination directory is a file. Move canceled');
+		}
+		
 		// do move
         if (move == 1) {
             event.move_info.do_move();
@@ -62,3 +68,27 @@ $('#ajax-nested-jqtree').on(
         }
     }
 );
+
+function tryGetPath(pathItem) {
+    const isPosix = pathItem.includes("/");
+    if ((isPosix && pathItem.endsWith("/")) ||
+        (!isPosix && pathItem.endsWith("\\"))) {
+        pathItem = pathItem + ".";
+    }
+    return pathItem;
+}
+// If a path ends with a current directory identifier, it is a path! /c/dos/run/. and c:\dos\run\.
+function isDirectory(pathItem) {
+    const isPosix = pathItem.includes("/");
+    if (pathItem === "." || pathItem ==- "..") {
+        pathItem = (isPosix ? "./" : ".\\") + pathItem;
+    }
+    return (isPosix ? pathItem.endsWith("/.") || pathItem.endsWith("/..") : pathItem.endsWith("\\.") || pathItem.endsWith("\\.."));
+} 
+// If a path is not a directory, and it isn't empty, it must be a file
+function isFile(pathItem) {
+    if (pathItem === "") {
+        return false;
+    }
+    return !isDirectory(pathItem);
+}
