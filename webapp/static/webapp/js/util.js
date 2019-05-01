@@ -125,6 +125,11 @@ function buildDataTable(result){
                 'csvHtml5', 'pdfHtml5'
             ],  
             dom: 'Bfrtip',
+
+            /**
+             *  Use this variable to adjust number of scraped items show in a session (results) tab
+             */
+            pageLength: 30
         });
 }
 
