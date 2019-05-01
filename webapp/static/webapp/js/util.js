@@ -1,5 +1,6 @@
 // Globals
-let amount_of_sessions = 4;
+let amount_of_sessions = 0;
+let current_session = -1; // None selected is -1
 
 function setUpModal() {
     // Get the modal
@@ -53,7 +54,26 @@ function removeCriteria(e) {
 }
 
 function setUpRemoveSession(){
+    document.getElementById("add-criteria-button").onclick = function () {
 
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let keyword_to_add = document.getElementById("keywordInsert").value;
+        let dev_root = "http://127.0.0.1:8000/";
+        let local_url = "webapp/criteria/add/" + keyword_to_add;
+        let url = dev_root + local_url;
+ 
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            // let table_start = document.getElementById("nav-bar-start");
+            buildKeyWordTable(result);
+
+            current_session = -1;
+        }
+
+        oReq.open("GET", url);
+        oReq.send();
+    };
 }
 
 function setUpGetSession() {
@@ -62,6 +82,7 @@ function setUpGetSession() {
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
         let selected_session = $(this).val();
+        current_session = selected_session;
         let local_url = "get_session/" + selected_session;
         let url = dev_root + local_url;
 
@@ -127,6 +148,16 @@ function buildDataTable(result) {
         ],
         dom: 'Bfrtip',
     });
+
+    let html5_button = document.getElementsByClassName("buttons-html5");
+    let delete_button = document.createElement("button");
+    delete_button.innerText = 'Delete';
+
+    // Append after
+    html5_button.parentNode.insertBefore(delete_button, element.nextSibling);
+
+    // html5_button appendChild(delete_button);
+
 }
 
 function buildKeyWordTable(result) {
@@ -155,6 +186,7 @@ function buildKeyWordTable(result) {
         scrollY: 250,
         dom: 'Bfrtip',
     });
+
 
 }
 
