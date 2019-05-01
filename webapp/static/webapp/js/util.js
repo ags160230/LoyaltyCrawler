@@ -53,26 +53,27 @@ function removeCriteria(e) {
     // this.text
 }
 
-function setUpRemoveSession(){
-    document.getElementById("add-criteria-button").onclick = function () {
-
+function setUpRemoveSession() {
+    document.getElementById("deleteSessionButton").onclick = function () {
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let keyword_to_add = document.getElementById("keywordInsert").value;
         let dev_root = "http://127.0.0.1:8000/";
-        let local_url = "webapp/criteria/add/" + keyword_to_add;
+        let local_url = "webapp/delete_session/" + current_session;
         let url = dev_root + local_url;
- 
+
         oReq.onload = function (e) {
             let result = oReq.response;
             // let table_start = document.getElementById("nav-bar-start");
             buildKeyWordTable(result);
-
+            $("#get-session-button").val(0);
+            // Update amount of sessions  
+            amount_of_sessions -= 1;
             current_session = -1;
         }
-
         oReq.open("GET", url);
         oReq.send();
+
     };
 }
 
@@ -147,17 +148,39 @@ function buildDataTable(result) {
             'csvHtml5', 'pdfHtml5'
         ],
         dom: 'Bfrtip',
+        "lengthChange": true,
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
+        "pageLength": 7,
+        autofill: true
+
+
+        //"lengthChange": true,
+        //"lengthMenu": [5, 10, 25, 50, 75, 100, "All" ],
+        //"pageLength": 5
     });
 
-    let html5_button = document.getElementsByClassName("buttons-html5");
-    let delete_button = document.createElement("button");
-    delete_button.innerText = 'Delete';
+    // Javascript to delete item from table locally
+    // CSV and PDF button print whatever is locally shown on user's display
+    // This function does not delete permentally
+    $(document).ready(function () {
+        var table = $('#table_id').DataTable();
 
-    // Append after
-    html5_button.parentNode.insertBefore(delete_button, element.nextSibling);
+        $('#table_id tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
 
-    // html5_button appendChild(delete_button);
-
+        $('#deleteRowButton').click(function () {
+            table.row('.selected').remove().draw(false);
+        });
+    });
 }
 
 function buildKeyWordTable(result) {
@@ -190,6 +213,10 @@ function buildKeyWordTable(result) {
 
 }
 
+function renderSession() {
+
+}
+
 
 function setUpStartSession() {
 
@@ -197,6 +224,7 @@ function setUpStartSession() {
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
+        console.log("start session" + amount_of_sessions + 1);
         let local_url = "start_session/" + (amount_of_sessions + 1);
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
@@ -228,6 +256,8 @@ function setUpStartSession() {
     }
 }
 
+
+
 function setUpSessionSelector() {
     var oReq = new XMLHttpRequest();
     oReq.responseType = "json";
@@ -237,7 +267,7 @@ function setUpSessionSelector() {
 
     oReq.onload = function (e) {
         let result = oReq.response;
-        console.log(result[0]);
+        console.log(result[0]); //7
         amount_of_sessions = result[0];
         let i = 1;
         let start_node = document.getElementById("get-session-button");
@@ -248,6 +278,7 @@ function setUpSessionSelector() {
 
         let default_option = document.createElement("option");
         default_option.text = "None Selected";
+        default_option.value = 0;
         default_option.selected = true;
         start_node.appendChild(default_option);
 
