@@ -173,8 +173,6 @@ function buildDataTable(result) {
         //"lengthMenu": [5, 10, 25, 50, 75, 100, "All" ],
         //"pageLength": 5
     });
-
-
 }
 
 function buildKeyWordTable(result) {
@@ -239,14 +237,10 @@ function setUpStartSession() {
         oReq.onload = function (e) {
             let result = oReq.response; //jQuery.parseJSON(oReq.response);
             // buildDataTable(result);
-            console.log("Got response from start session" + (amount_of_sessions + 1));
             setUpSessionSelector();
-        }
-        oReq.abort = function (e) {
-            let result = oReq.response; //jQuery.parseJSON(oReq.response);
-            // buildDataTable(result);
             console.log("Got response from start session" + (amount_of_sessions + 1));
         }
+
         oReq.open("GET", url);
         oReq.send();
     };
