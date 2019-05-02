@@ -11,7 +11,7 @@ from .crawler.crawler import *
 # def start_session(request, search_criterion_id):
 def start_session(request):
     execute_session()
-    return HttpResponse("created session: " + ArchiveManager.get_last_session_id())
+    return HttpResponse("created session!")
 
 
 def delete_session(request, session_id):
