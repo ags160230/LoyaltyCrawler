@@ -233,7 +233,7 @@ function setUpStartSession() {
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
         let keyword_list = "123";
-        let local_url = "start_session/" + 1; 
+        let local_url = "start_session/"; 
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
         oReq.onload = function (e) {

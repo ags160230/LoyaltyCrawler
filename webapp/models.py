@@ -31,6 +31,7 @@ class ArchiveManager(models.Manager):
         unique_num_of_tables_left = Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")).count()
         return unique_num_of_tables_left
 
+    @staticmethod
     def get_unique_sessions():
         # unique_num_of_tables_left = Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")).count()
         print(Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")))
