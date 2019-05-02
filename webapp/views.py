@@ -8,9 +8,10 @@ from .crawler.crawler import *
 
 
 # i.e. test home page
-def start_session(request, search_criteria_id):
-    execute_session(search_criteria_id)
-    return HttpResponse("created session: " + str(search_criteria_id))
+# def start_session(request, search_criterion_id):
+def start_session(request):
+    execute_session()
+    return HttpResponse("created session: " + ArchiveManager.get_last_session_id())
 
 
 def delete_session(request, session_id):
@@ -19,10 +20,8 @@ def delete_session(request, session_id):
 
 
 def check_last_session_index(request):
-    new_session_index = ArchiveManager.get_last_session_id()
-    output = {}
-    output[0] = new_session_index
-    return JsonResponse(output)
+    unique_session_indexes = ArchiveManager.get_unique_sessions()
+    return JsonResponse(unique_session_indexes)
 
 # Redirected page of artifact
 @require_http_methods(["GET", "POST"])
@@ -101,10 +100,11 @@ def remove_search_criteria(request, criterion_to_remove):
 
 
 # Function to start a session, receive artifact url list from scrapy, and store the url's in the DB
-def execute_session(search_criteria_id):
+# def execute_session(search_criteria_id):
+def execute_session():
     try:
         # CriteriaManager.reset_criterion_to_use()
-        CriteriaManager.set_criterion_to_use(search_criteria_id)
+        # CriteriaManager.set_criterion_to_use(search_criteria_id)
         run_crawler()
 
     except OSError:

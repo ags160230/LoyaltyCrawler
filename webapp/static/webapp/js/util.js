@@ -1,5 +1,6 @@
 // Globals
-let amount_of_sessions = 4;
+let amount_of_sessions = 0;
+let current_session = -1; // None selected is -1
 
 function setUpModal() {
     // Get the modal
@@ -28,7 +29,6 @@ function setUpModal() {
 
 function setUpAddCriteriaButton() {
     document.getElementById("add-criteria-button").onclick = function () {
-
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let keyword_to_add = document.getElementById("keywordInsert").value;
@@ -47,31 +47,64 @@ function setUpAddCriteriaButton() {
     };
 }
 
-function removeCriteria(e) {
-    console.log(e);
-    // this.text
-}
+function removeCriteria(event) {
+    console.log(event.explicitOriginalTarget.getAttribute("value"));
+    let word_to_remove = event.explicitOriginalTarget.getAttribute("value");
 
-function setUpRemoveSession(){
-
-}
-
-function setUpGetSession() {
-    $("#get-session-button").change(function () {
-        var oReq = new XMLHttpRequest();
+    var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
+        let keyword_to_add = document.getElementById("keywordInsert").value;
         let dev_root = "http://127.0.0.1:8000/webapp/";
-        let selected_session = $(this).val();
-        let local_url = "get_session/" + selected_session;
+        let local_url = "criteria/remove/" + word_to_remove;
         let url = dev_root + local_url;
 
         oReq.onload = function (e) {
             let result = oReq.response;
-            buildDataTable(result);
+            console.log(result);
+            buildKeyWordTable(result);
         }
-
         oReq.open("GET", url);
         oReq.send();
+}
+
+function setUpRemoveSession() {
+    document.getElementById("deleteSessionButton").onclick = function () {
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let keyword_to_add = document.getElementById("keywordInsert").value;
+        let dev_root = "http://127.0.0.1:8000/";
+        let local_url = "webapp/delete_session/" + current_session;
+        let url = dev_root + local_url;
+
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            // let table_start = document.getElementById("nav-bar-start");
+            buildKeyWordTable(result);
+            $("#get-session-button").val(0);
+            showNoData();
+            setUpSessionSelector(); 
+            // Update amount of sessions  
+            amount_of_sessions -= 1;
+            current_session = -1;
+        }
+        oReq.open("GET", url);
+        oReq.send();
+
+    };
+}
+
+function showNoData(){
+    $('#table_id').DataTable({
+        destroy: true,
+        data: []
+    });
+}
+
+
+function setUpGetSession() {
+    $("#get-session-button").change(function () {
+        let selected_session = $(this).val();
+        getSession(selected_session);
     });
 }
 
@@ -88,6 +121,7 @@ function setUpViewCriteria() {
 
         oReq.onload = function (e) {
             let result = oReq.response;
+            console.log(result);
             buildKeyWordTable(result);
 
         }
@@ -106,17 +140,20 @@ function buildDataTable(result) {
             'id': key,
             'link': '<a target="_blank" href=' + result[key] + '>' + result[key] + "</a>"
         }
-        formatted.push(element); 
+        formatted.push(element);
     }
-    
+
     $('#table_id').DataTable({
         destroy: true,
         data: formatted,
-        columns: [
-            { data: 'id' },
-            { data: 'link' }
+        columns: [{
+                data: 'id'
+            },
+            {
+                data: 'link'
+            }
         ],
-        
+
         paging: true,
         scrollY: 300,
         buttons: [
@@ -124,7 +161,10 @@ function buildDataTable(result) {
         ],
         dom: 'Bfrtip',
         "lengthChange": true,
-        "lengthMenu": [ [5, 10, 25, 50, -1], [5, 10, 25, 50, "All"] ],
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
         "pageLength": 7,
         autofill: true
 
@@ -134,26 +174,7 @@ function buildDataTable(result) {
         //"pageLength": 5
     });
 
-    // Javascript to delete item from table locally
-    // CSV and PDF button print whatever is locally shown on user's display
-    // This function does not delete permentally
-    $(document).ready(function() {
-        var table = $('#table_id').DataTable();
-     
-        $('#table_id tbody').on( 'click', 'tr', function () {
-            if ( $(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }
-            else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        } );
-     
-        $('#deleteRowButton').click( function () {
-            table.row('.selected').remove().draw( false );
-        } );
-    } );
+
 }
 
 function buildKeyWordTable(result) {
@@ -162,7 +183,7 @@ function buildKeyWordTable(result) {
     for (var key in result) {
         let element = {
             'Keyword': '<a>' + result[key] + "</a>",
-            'Remove': '<a class="remove-button"  onclick="removeCriteria()"  >' + "Remove" + "</a>"
+            'Remove': '<a class="remove-button"  onclick="removeCriteria(event)" value="' + result[key] + '"  >' + "Remove" + "</a>"
         }
         formatted.push(element);
     }
@@ -183,6 +204,25 @@ function buildKeyWordTable(result) {
         dom: 'Bfrtip',
     });
 
+
+}
+
+function getSession(selected_session) {
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let dev_root = "http://127.0.0.1:8000/webapp/";
+        selected_session = $("#get-session-button").val();
+        current_session = selected_session;
+        let local_url = "get_session/" + selected_session;
+        let url = dev_root + local_url;
+
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            buildDataTable(result);
+        }
+
+        oReq.open("GET", url);
+        oReq.send();
 }
 
 
@@ -192,14 +232,20 @@ function setUpStartSession() {
         var oReq = new XMLHttpRequest();
         oReq.responseType = "json";
         let dev_root = "http://127.0.0.1:8000/webapp/";
-        let local_url = "start_session/" + (amount_of_sessions + 1);
+        let keyword_list = "123";
+        let local_url = "start_session/"; 
         let url = dev_root + local_url; //"http://127.0.0.1:8000/static/webapp/assets/data/link.json";
 
         oReq.onload = function (e) {
             let result = oReq.response; //jQuery.parseJSON(oReq.response);
             // buildDataTable(result);
-            console.log(result);
+            console.log("Got response from start session" + (amount_of_sessions + 1));
             setUpSessionSelector();
+        }
+        oReq.abort = function (e) {
+            let result = oReq.response; //jQuery.parseJSON(oReq.response);
+            // buildDataTable(result);
+            console.log("Got response from start session" + (amount_of_sessions + 1));
         }
         oReq.open("GET", url);
         oReq.send();
@@ -223,6 +269,8 @@ function setUpStartSession() {
     }
 }
 
+
+
 function setUpSessionSelector() {
     var oReq = new XMLHttpRequest();
     oReq.responseType = "json";
@@ -232,8 +280,9 @@ function setUpSessionSelector() {
 
     oReq.onload = function (e) {
         let result = oReq.response;
-        console.log(result[0]);
-        amount_of_sessions = result[0];
+        let unique_sessions = Object.keys(result).length;
+        console.log("Number of unique sessions: " + unique_sessions);
+        amount_of_sessions = unique_sessions;
         let i = 1;
         let start_node = document.getElementById("get-session-button");
 
@@ -243,17 +292,19 @@ function setUpSessionSelector() {
 
         let default_option = document.createElement("option");
         default_option.text = "None Selected";
+        default_option.value = 0;
         default_option.selected = true;
         start_node.appendChild(default_option);
 
-        while (i < amount_of_sessions + 1) {
+        Object.keys(result)
+        Object.keys(result).forEach(function(key) {
+            // var val = o[key];
             let option = document.createElement("option");
-            option.value = i;
+            option.value = key;
             option.text = "Session " + i;
             start_node.appendChild(option);
-            // id="get-session-button";
             i += 1;
-        }
+          });
     }
 
     oReq.open("GET", url);
@@ -262,6 +313,27 @@ function setUpSessionSelector() {
 }
 
 function main() {
+
+    // Javascript to delete item from table locally
+    // CSV and PDF button print whatever is locally shown on user's display
+    // This function does not delete permentally
+    $(document).ready(function () {
+        var table = $('#table_id').DataTable();
+        
+
+        $('#table_id tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $('#deleteRowButton').click(function () {
+            table.row('.selected').remove().draw(false);
+        });
+    });
 
     setUpSessionSelector();
     setUpModal();

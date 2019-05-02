@@ -20,7 +20,13 @@ class Crawler(scrapy.Spider):
     session_id = ArchiveManager.get_last_session_id() + 1
     # record = CriteriaManager.get_criterion_to_use()
     # keywords = record.criterion
-    keywords = "loyalty rewards program customer behavior"
+
+    records = CriteriaManager.get_criteria()
+    keywords = ""
+
+    for r in records:
+        keywords += r.criterion + " "
+
     start_urls = ['https://google.com/search?q=' + keywords]
     count = 0
     COUNT_MAX = 30
@@ -53,6 +59,21 @@ def run_crawler():
     spider = runner.crawl(Crawler)
     spider.addBoth(lambda _: reactor.stop())
     reactor.run(installSignalHandlers=False)
-    time.sleep(0.2)
-    os.execl(sys.executable, sys.executable, *sys.argv)
+
+    """
+    try:
+        reactor.run(installSignalHandlers=False)
+        # time.sleep(0.2)
+        # os.execl(sys.executable, sys.executable, *sys.argv)
+    except Exception:
+        del sys.modules['twisted.internet.reactor']
+        from twisted.internet import reactor
+        from twisted.internet import default
+        default.install()
+    """
+
+
+
+
+
 

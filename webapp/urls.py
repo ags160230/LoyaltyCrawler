@@ -8,8 +8,8 @@ urlpatterns = [
     path('artifact/<int:artifact_id>/', views.view_artifact, name='view_artifact'),
     path('criteria', views.get_search_criteria, name='get_search_criteria'),
     path('criteria/add/<str:new_criterion>/', views.add_search_criteria, name='add_search_criteria'),
-    path('criteria/remove', views.remove_search_criteria, name='remove_search_criteria'),
-    path('start_session/<int:search_criteria_id>/', views.start_session, name='start_session'),
+    path('criteria/remove/<str:criterion_to_remove>/', views.remove_search_criteria, name='remove_search_criteria'),
+    path('start_session/', views.start_session, name='start_session'),
     path('delete_session/<int:session_id>/', views.delete_session, name='delete_session'),
     path('check_last_session_index/', views.check_last_session_index, name='check_last_session_index'),
 ]

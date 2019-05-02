@@ -25,10 +25,22 @@ class ArchiveManager(models.Manager):
     def delete_session(s_id):
         Artifacts.objects.filter(session_id=s_id).delete()
 
-    # returns the latest session number
+    # returns the latest ses    sion number
     @staticmethod
     def get_last_session_id():
-        return Artifacts.objects.all().last().session_id
+        unique_num_of_tables_left = Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")).count()
+        return unique_num_of_tables_left
+
+    @staticmethod
+    def get_unique_sessions():
+        # unique_num_of_tables_left = Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")).count()
+        print(Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")))
+        unique_sessions = {} 
+        for obj in Artifacts.objects.all().values("session_id").annotate(n=models.Count("pk")):
+            print(obj["session_id"])
+            unique_sessions[obj["session_id"]] = "id" 
+        # unique_session_id = ;
+        return unique_sessions
 
 
 class Artifacts(models.Model):
