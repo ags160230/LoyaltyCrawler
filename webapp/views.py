@@ -19,10 +19,8 @@ def delete_session(request, session_id):
 
 
 def check_last_session_index(request):
-    new_session_index = ArchiveManager.get_last_session_id()
-    output = {}
-    output[0] = new_session_index
-    return JsonResponse(output)
+    unique_session_indexes = ArchiveManager.get_unique_sessions()
+    return JsonResponse(unique_session_indexes)
 
 # Redirected page of artifact
 @require_http_methods(["GET", "POST"])
