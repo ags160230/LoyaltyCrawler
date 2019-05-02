@@ -14,6 +14,9 @@ urlpatterns = [
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
 	path('ajax/filetree/post/', ajax.filetree_post, name='filetree_post'),
 	path('ajax/filetree/move/', ajax.filetree_move, name='filetree_move'),
+	path('ajax/filetree/delete/', ajax.filetree_delete, name='filetree_delete'),
+	path('ajax/filetree/rename/', ajax.filetree_rename, name='filetree_rename'),
+	path('ajax/filetree/create/', ajax.filetree_create, name='filetree_create'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,
