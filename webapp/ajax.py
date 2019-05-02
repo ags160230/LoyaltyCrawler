@@ -51,48 +51,7 @@ def filetree_create(request):
     else:
         raise Http404
 		
-# filtree post function for ajax
-# move file or folder node
-@require_http_methods(["POST"])
-def filetree_rename(request):
 
-	# determine if we are in debug mode for print statements and sanity checks
-    debugMode = settings.DEBUG
-	
-	# print that this function was called
-    if debugMode == True:
-        print("called: filetree_rename")
-        print(request)
-		
-	# logic for handling request	
-    if request.is_ajax() and request.POST:
-	    # this line allows python to retrive data from ajax
-		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
-        renamed_node_id = request.POST.get('my_jq_tree_renamed_node_id')
-        parent_node_id = request.POST.get('my_jq_tree_parent_node_id')
-        new_name = request.POST.get('my_jq_tree_new_name')
-		
-		# print data during debug mode before move
-        if debugMode == True:
-            print("renamed_node_id: " + renamed_node_id)
-            print("parent_node_id: " + parent_node_id)
-            print("new_name: " + new_name)
-			
-		# do the rename
-        source = renamed_node_id
-        destination = parent_node_id + os.sep + new_name
-		# this will work for directories and well as files
-        rename_file(source, destination)
-		
-		# this shows python maniuplating the string before sending back to ajax
-        data = 	{
-					'message': "Python renamed file: " + source + " to: " + destination,
-					'new_node_id': destination
-				}
-			
-        return HttpResponse(json.dumps(data), content_type='application/json')
-    else:
-        raise Http404
 		
 		
 # filtree post function for ajax
@@ -138,6 +97,49 @@ def filetree_delete(request):
     else:
         raise Http404
 		
+# filtree post function for ajax
+# move file or folder node
+@require_http_methods(["POST"])
+def filetree_rename(request):
+
+	# determine if we are in debug mode for print statements and sanity checks
+    debugMode = settings.DEBUG
+	
+	# print that this function was called
+    if debugMode == True:
+        print("called: filetree_rename")
+        print(request)
+		
+	# logic for handling request	
+    if request.is_ajax() and request.POST:
+	    # this line allows python to retrive data from ajax
+		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
+        renamed_node_id = request.POST.get('my_jq_tree_renamed_node_id')
+        parent_node_id = request.POST.get('my_jq_tree_parent_node_id')
+        new_name = request.POST.get('my_jq_tree_new_name')
+		
+		# print data during debug mode before move
+        if debugMode == True:
+            print("renamed_node_id: " + renamed_node_id)
+            print("parent_node_id: " + parent_node_id)
+            print("new_name: " + new_name)
+			
+		# do the rename
+        source = renamed_node_id
+        destination = parent_node_id + os.sep + new_name
+		# this will work for directories and well as files
+        rename_file(source, destination)
+		
+		# this shows python maniuplating the string before sending back to ajax
+        data = 	{
+					'message': "Python renamed file: " + source + " to: " + destination,
+					'new_node_id': destination
+				}
+			
+        return HttpResponse(json.dumps(data), content_type='application/json')
+    else:
+        raise Http404
+
 		
 # filtree post function for ajax
 # move file or folder node

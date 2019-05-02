@@ -83,9 +83,17 @@ $('#ajax-nested-jqtree').on(
         var renamed_node = event.node;
         var parent_node = event.node.parent;
 		
+		// if the renamed node, is a root node
+		if (parent_node.name == ''){
+			var parent_id = $(".html-file-tree-root-text-box").val();
+		} else {
+			var parent_id = parent_node.id;
+		}
+
 		// print to console
         console.log('renamed_node', renamed_node);
-        console.log('parent', parent_node);
+		console.log('parent', parent_node);
+        console.log('parent_id', parent_id);
 		
 
 		var rename = 1;
@@ -98,12 +106,6 @@ $('#ajax-nested-jqtree').on(
 				confirm('Parent directory already has a file named ' + new_name +'. Rename canceled.');
 			}
 		}
-		
-		// check is path is a file
-		//if (target_node.type == 'file'){
-			//move = -1;
-			//confirm('Specified destination directory is a file. Move canceled');
-		//}
 		
 		// do move
         if (rename == 1) {
@@ -118,7 +120,7 @@ $('#ajax-nested-jqtree').on(
 				// this will mess up the jqtree objects
 				data: 	{ 
 							"my_jq_tree_renamed_node_id": renamed_node.id,
-							"my_jq_tree_parent_node_id": parent_node.id,
+							"my_jq_tree_parent_node_id": parent_id,
 							"my_jq_tree_new_name": new_name ,
 						},
 						
@@ -130,17 +132,17 @@ $('#ajax-nested-jqtree').on(
 					// at this point the data has been returned by python to AJAX
 					// no need to do anything with it, since jqtree handles the webpage tree nodes
 					console.log("Data returned from python" + data.message);
-					// add new node
+					
+					// update node
+					
 					$('#ajax-nested-jqtree').tree(
-						'addNodeAfter',
+						'updateNode',
+						renamed_node,
 						{
 							name: new_name,
 							id: data.new_node_id
-						},
-						renamed_node
+						}
 					);
-					// delete old node
-					$('#ajax-nested-jqtree').tree('removeNode', renamed_node);
 				}
 			});
         }
