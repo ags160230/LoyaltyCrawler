@@ -47,9 +47,24 @@ function setUpAddCriteriaButton() {
     };
 }
 
-function removeCriteria(e) {
-    console.log(e);
-    // this.text
+function removeCriteria(event) {
+    console.log(event.explicitOriginalTarget.getAttribute("value"));
+    let word_to_remove = event.explicitOriginalTarget.getAttribute("value");
+
+    var oReq = new XMLHttpRequest();
+        oReq.responseType = "json";
+        let keyword_to_add = document.getElementById("keywordInsert").value;
+        let dev_root = "http://127.0.0.1:8000/webapp/";
+        let local_url = "criteria/remove/" + word_to_remove;
+        let url = dev_root + local_url;
+
+        oReq.onload = function (e) {
+            let result = oReq.response;
+            console.log(result);
+            buildKeyWordTable(result);
+        }
+        oReq.open("GET", url);
+        oReq.send();
 }
 
 function setUpRemoveSession() {
@@ -106,6 +121,7 @@ function setUpViewCriteria() {
 
         oReq.onload = function (e) {
             let result = oReq.response;
+            console.log(result);
             buildKeyWordTable(result);
 
         }
@@ -167,7 +183,7 @@ function buildKeyWordTable(result) {
     for (var key in result) {
         let element = {
             'Keyword': '<a>' + result[key] + "</a>",
-            'Remove': '<a class="remove-button"  onclick="removeCriteria(e)"  >' + "Remove" + "</a>"
+            'Remove': '<a class="remove-button"  onclick="removeCriteria(event)" value="' + result[key] + '"  >' + "Remove" + "</a>"
         }
         formatted.push(element);
     }
