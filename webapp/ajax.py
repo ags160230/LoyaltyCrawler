@@ -2,6 +2,7 @@ import json
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
 from .file_operations import *
+from .folder_operations import *
 import os
 from django.conf import settings
 
@@ -11,7 +12,7 @@ from django.conf import settings
 # filtree post function for ajax
 # move file or folder node
 @require_http_methods(["POST"])
-def filetree_create(request):
+def filetree_create_node(request):
 
 	# determine if we are in debug mode for print statements and sanity checks
     debugMode = settings.DEBUG
@@ -39,7 +40,7 @@ def filetree_create(request):
 		# do the move
         source = moved_node_id
         destination = target_node_id
-		# this will work for directories and well as files
+		# this will work for directories as well as files
         create_file(source, destination)
 		
 		# this shows python maniuplating the string before sending back to ajax
@@ -57,7 +58,7 @@ def filetree_create(request):
 # filtree post function for ajax
 # delete file or folder node
 @require_http_methods(["POST"])
-def filetree_delete(request):
+def filetree_delete_node(request):
 
 	# determine if we are in debug mode for print statements and sanity checks
     debugMode = settings.DEBUG
@@ -71,22 +72,16 @@ def filetree_delete(request):
     if request.is_ajax() and request.POST:
 	    # this line allows python to retrive data from ajax
 		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
-        moved_node_id = request.POST.get('my_jq_tree_moved_node_id')
-        target_node_id = request.POST.get('my_jq_tree_target_node_id')
-        position = request.POST.get('my_jq_tree_position')
-        previous_parent_id = request.POST.get('my_jq_tree_previous_parent_id')
-		
+        deleted_node_id = request.POST.get('my_jq_tree_deleted_node_id')
+
 		# print data during debug mode before move
         if debugMode == True:
-            print("moved_node_id: " + moved_node_id)
-            print("target_node_id: " + target_node_id)
-            print("position: " + position)
+            print("deleted_node_id: " + deleted_node_id)
 			
 		# do the move
-        source = moved_node_id
-        destination = target_node_id
-		# this will work for directories and well as files
-        delete_folder(source, destination)
+        source = deleted_node_id
+		# this will work for files as well as directories
+        delete_folder(source)
 		
 		# this shows python maniuplating the string before sending back to ajax
         data = {'message': "Python deleted file: " + source}
@@ -100,7 +95,7 @@ def filetree_delete(request):
 # filtree post function for ajax
 # move file or folder node
 @require_http_methods(["POST"])
-def filetree_rename(request):
+def filetree_rename_node(request):
 
 	# determine if we are in debug mode for print statements and sanity checks
     debugMode = settings.DEBUG
@@ -127,7 +122,7 @@ def filetree_rename(request):
 		# do the rename
         source = renamed_node_id
         destination = parent_node_id + os.sep + new_name
-		# this will work for directories and well as files
+		# this will work for directories as well as files
         rename_file(source, destination)
 		
 		# this shows python maniuplating the string before sending back to ajax
@@ -144,7 +139,7 @@ def filetree_rename(request):
 # filtree post function for ajax
 # move file or folder node
 @require_http_methods(["POST"])
-def filetree_move(request):
+def filetree_move_node(request):
 
 	# determine if we are in debug mode for print statements and sanity checks
     debugMode = settings.DEBUG
@@ -172,7 +167,7 @@ def filetree_move(request):
 		# do the move
         source = moved_node_id
         destination = target_node_id
-		# this will work for directories and well as files
+		# this will work for directories as well as files
         move_file(source, destination)
 		
 		# this shows python maniuplating the string before sending back to ajax
@@ -187,7 +182,7 @@ def filetree_move(request):
 # filtree post function for ajax
 # post file tree to page
 @require_http_methods(["POST"])	
-def filetree_post(request):
+def filetree_post_tree(request):
 
 	# determine if we are in debug mode for print statements and sanity checks
     debugMode = settings.DEBUG

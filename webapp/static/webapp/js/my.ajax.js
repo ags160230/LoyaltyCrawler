@@ -21,7 +21,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 			// note how the url differs from a GET operation, there is a trailing slash
-			url: "ajax/filetree/post/",
+			url: "ajax/filetree/post_tree/",
 			dataType: "json",
 			// store item from html page into this file
 			// function will pass data to the corresponding method in ajax.py during the request
@@ -43,6 +43,8 @@ $(document).ready(function() {
 		});
 		
 	});
+	
+
 	
 	// ** KEEP THIS CODE since Post methods rely on the CSRF token
 	

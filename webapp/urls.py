@@ -12,11 +12,11 @@ urlpatterns = [
     path('criteria/edit', views.edit_search_criteria, name='edit_search_criteria'),
     path('start/<int:search_criteria_id>/', views.start_session, name='start_session'),
     path('delete/<int:session_id>/', views.delete_session, name='delete_session'),
-	path('ajax/filetree/post/', ajax.filetree_post, name='filetree_post'),
-	path('ajax/filetree/move/', ajax.filetree_move, name='filetree_move'),
-	path('ajax/filetree/delete/', ajax.filetree_delete, name='filetree_delete'),
-	path('ajax/filetree/rename/', ajax.filetree_rename, name='filetree_rename'),
-	path('ajax/filetree/create/', ajax.filetree_create, name='filetree_create'),
+	path('ajax/filetree/post_tree/', ajax.filetree_post_tree, name='filetree_post_tree'),
+	path('ajax/filetree/move_node/', ajax.filetree_move_node, name='filetree_move_node'),
+	path('ajax/filetree/delete_node/', ajax.filetree_delete_node, name='filetree_delete_node'),
+	path('ajax/filetree/rename_node/', ajax.filetree_rename_node, name='filetree_rename_node'),
+	path('ajax/filetree/create_node/', ajax.filetree_create_node, name='filetree_create_node'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,

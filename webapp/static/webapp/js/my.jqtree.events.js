@@ -44,7 +44,7 @@ $('#ajax-nested-jqtree').on(
 			// do ajax request to return to python
 			$.ajax({
 				type: "POST",
-				url: "ajax/filetree/move/",
+				url: "ajax/filetree/move_node/",
 				// assemble data to send to python
 				// DON'T send python the node objects themselves
 				// this will mess up the jqtree objects
@@ -69,13 +69,72 @@ $('#ajax-nested-jqtree').on(
     }
 );
 
+
+
 $('#ajax-nested-jqtree').on(
-    'tree.dblclick',
+    'tree.select',
     function(event) {
+        if (event.node) {
+			
+            // node was selected
+            var node = event.node;
+			operationSelector(event);
+			console.log("Event done");
+        }
+        else {
+            // event.node is null
+            // a node was deselected
+            // e.previous_node contains the deselected node
+        }
+    }
+);
+
+function operationSelector(event){
+		// prompt user for copy, delete or rename
+		var operationType = prompt("Enter choice: c for copy, d for delete or r for rename");
 		
-        // event.node is the clicked node
-        console.log(event.node);
-		
+		if (operationType == 'c'){
+			console.log("copy");
+		}else if(operationType == 'd'){
+			deleteTreeNode(event);
+		}else if(operationType == 'r'){
+			renameTreeNode(event);
+		}
+}
+
+function deleteTreeNode(event){
+	
+		// save attributes from node
+        var deleted_node = event.node;
+		// has to be a post call so we can edit data
+		// do ajax request to return to python
+		$.ajax({
+			type: "POST",
+			url: "ajax/filetree/delete_node/",
+			// assemble data to send to python
+			// DON'T send python the node objects themselves
+			// this will mess up the jqtree objects
+			data: 	{ 
+						"my_jq_tree_deleted_node_id": deleted_node.id,
+					},
+					
+			// on AJAX request success 
+			// call python function to move the file
+			// python function is tied to ajax request via the urls.py file
+			// in this case the url is ajax/filetree/move and the function to call is ajax.filetree_move
+			success: function(data) {
+				// at this point the data has been returned by python to AJAX
+				// no need to do anything with it, since jqtree handles the webpage tree nodes
+				console.log("Data returned from python" + data.message);
+				
+				// remove node
+				$('#ajax-nested-jqtree').tree('removeNode', deleted_node);
+				
+			}
+		});
+}
+
+function renameTreeNode(event){
 		// prompt user for new name
 		var new_name = prompt("Enter new name");
 		
@@ -114,7 +173,7 @@ $('#ajax-nested-jqtree').on(
 			// do ajax request to return to python
 			$.ajax({
 				type: "POST",
-				url: "ajax/filetree/rename/",
+				url: "ajax/filetree/rename_node/",
 				// assemble data to send to python
 				// DON'T send python the node objects themselves
 				// this will mess up the jqtree objects
@@ -147,6 +206,6 @@ $('#ajax-nested-jqtree').on(
 			});
         }
 
-    }
-	
-);
+    
+}
+
