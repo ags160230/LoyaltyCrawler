@@ -70,7 +70,7 @@ body {
 
 .content-page {
   overflow: hidden;
-  padding:5px 5px;
+  padding:0px 0px;
   min-height: 80vh;
 }
 
@@ -190,7 +190,6 @@ body {
 
 /* When you mouse over the navigation links, change their color */
 .right-sidenav ul a:hover,span:hover {
-  color: #f1f1f1;
   text-decoration: none;
 }
 
