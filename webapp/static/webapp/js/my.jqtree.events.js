@@ -160,24 +160,32 @@ function copyTreeNode(event){
 				// no need to do anything with it, since jqtree handles the webpage tree nodes
 				console.log("Data returned from python" + data.message);
 				
-				
-				// add node
-
-				$('#ajax-nested-jqtree').tree(
-					'addNodeAfter',
-					{
-						name: new_name,
-						id: data.new_node_id
-					},
-					copied_node
-				);
-				
+			
 				// if directory add children
-				if (copied_node.type == 'directory'){
+				if (copied_node.type == 'file'){
+					
+					$('#ajax-nested-jqtree').tree(
+						'addNodeAfter',
+						{
+							name: new_name,
+							id: data.new_node_id
+						},
+						copied_node
+					);
+						
+				}
+				else if (copied_node.type == 'directory'){
 					
 					// TODO, did not have time to finish adding child nodes to copied node
-				
-					
+					$('#ajax-nested-jqtree').tree(
+						'addNodeAfter',
+						{
+							name: new_name,
+							id: data.new_node_id,
+						},
+						copied_node
+					);
+					alert("Directory copy requires webpage refresh. Click refresh now");
 				}
 				
 			}
