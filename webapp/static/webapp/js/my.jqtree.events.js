@@ -174,20 +174,9 @@ function copyTreeNode(event){
 				
 				// if directory add children
 				if (copied_node.type == 'directory'){
-
-				// TODO, did not have time to finish adding child nodes to copied node
-/* 					var i;
-					for (i = 0; i < parent_node.children.length; i++) { 
-						child_at_reference_node = parent_node.children[i];
-							$('#ajax-nested-jqtree').tree(
-								'prependNode',
-								{
-									name: child_at_reference_node.name,
-									id: data.new_node_id + data.filepathseperator + child_at_reference_node.name
-								},
-								parent_node
-							);
-					} */
+					
+					// TODO, did not have time to finish adding child nodes to copied node
+				
 					
 				}
 				
