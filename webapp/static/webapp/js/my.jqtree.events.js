@@ -99,6 +99,8 @@ function operationSelector(event){
 			deleteTreeNode(event);
 		}else if(operationType == 'r'){
 			renameTreeNode(event);
+		}else{
+			alert("Invalid option. Enter c, d or r.");
 		}
 }
 
@@ -175,17 +177,17 @@ function copyTreeNode(event){
 						
 				}
 				else if (copied_node.type == 'directory'){
-					
-					// TODO, did not have time to finish adding child nodes to copied node
 					$('#ajax-nested-jqtree').tree(
 						'addNodeAfter',
 						{
 							name: new_name,
-							id: data.new_node_id,
+							id: data.new_node_id
 						},
 						copied_node
 					);
-					alert("Directory copy requires webpage refresh. Click refresh now");
+					// TODO, did not have time to finish adding child nodes to copied node
+					// alert used to expand again
+					alert("Directory copy requires browser refresh. Click refresh now");
 				}
 				
 			}

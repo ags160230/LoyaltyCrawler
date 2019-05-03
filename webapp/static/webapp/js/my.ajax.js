@@ -6,6 +6,14 @@
 // https://godjango.com/18-basic-ajax/
 $(document).ready(function() {
 	
+	$('#collapse-tree-button').click(function(){
+		// print to browswer console as santiy check that this method is called
+		console.log('collapse-tree-button clicked');
+		
+		var root_node = $('#ajax-nested-jqtree').tree('getNodeById', $(".html-file-tree-root-text-box").val());
+		$('#ajax-nested-jqtree').tree('closeNode', root_node, false);
+	});
+	
 	// AJAX POST operation
 	// this method is called on the expand-tree-button click
 	$('#ajax-filetree-post-operation-expand-tree-button').click(function(){
