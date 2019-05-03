@@ -94,13 +94,109 @@ function operationSelector(event){
 		var operationType = prompt("Enter choice: c for copy, d for delete or r for rename");
 		
 		if (operationType == 'c'){
-			console.log("copy");
+			copyTreeNode(event);
 		}else if(operationType == 'd'){
 			deleteTreeNode(event);
 		}else if(operationType == 'r'){
 			renameTreeNode(event);
 		}
 }
+
+function copyTreeNode(event){
+
+		
+		// save attributes from node
+        var copied_node = event.node;
+        var parent_node = event.node.parent;
+		
+		// if the renamed node, is a root node
+		if (parent_node.name == ''){
+			var parent_id = $(".html-file-tree-root-text-box").val();
+		} else {
+			var parent_id = parent_node.id;
+		}
+
+		// print to console
+        console.log('copied_node', copied_node);
+		console.log('parent', parent_node);
+        console.log('parent_id', parent_id);
+		
+
+		var renameInteger = 1;
+		var i;
+		var new_name = copied_node.name;
+		var matchCounter = 0;
+		for (i = 0; i < parent_node.children.length; i++) { 
+			child_at_destination = parent_node.children[i];
+			// if parent already has existing child with same name
+			if (child_at_destination.name == new_name){
+				matchCounter += 1;
+				uniqueAppender = '(' + matchCounter.toString() + ')'
+				new_name = copied_node.name + uniqueAppender
+			}
+		}
+		
+		// has to be a post call so we can edit data
+		// do ajax request to return to python
+		$.ajax({
+			type: "POST",
+			url: "ajax/filetree/copy_node/",
+			// assemble data to send to python
+			// DON'T send python the node objects themselves
+			// this will mess up the jqtree objects
+			data: 	{ 
+						"my_jq_tree_copied_node_id": copied_node.id,
+						"my_jq_tree_copied_node_type": copied_node.type,
+						"my_jq_tree_parent_node_id": parent_id,
+						"my_jq_tree_new_name": new_name ,
+					},
+					
+			// on AJAX request success 
+			// call python function to move the file
+			// python function is tied to ajax request via the urls.py file
+			// in this case the url is ajax/filetree/move and the function to call is ajax.filetree_move
+			success: function(data) {
+				// at this point the data has been returned by python to AJAX
+				// no need to do anything with it, since jqtree handles the webpage tree nodes
+				console.log("Data returned from python" + data.message);
+				
+				
+				// add node
+
+				$('#ajax-nested-jqtree').tree(
+					'addNodeAfter',
+					{
+						name: new_name,
+						id: data.new_node_id
+					},
+					copied_node
+				);
+				
+				// if directory add children
+				if (copied_node.type == 'directory'){
+
+				// TODO, did not have time to finish adding child nodes to copied node
+/* 					var i;
+					for (i = 0; i < parent_node.children.length; i++) { 
+						child_at_reference_node = parent_node.children[i];
+							$('#ajax-nested-jqtree').tree(
+								'prependNode',
+								{
+									name: child_at_reference_node.name,
+									id: data.new_node_id + data.filepathseperator + child_at_reference_node.name
+								},
+								parent_node
+							);
+					} */
+					
+				}
+				
+			}
+		});
+
+    
+}
+
 
 function deleteTreeNode(event){
 	

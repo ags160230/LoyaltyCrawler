@@ -53,6 +53,53 @@ def filetree_create_node(request):
         raise Http404
 		
 
+# filtree post function for ajax
+# copy file or folder node
+@require_http_methods(["POST"])
+def filetree_copy_node(request):
+
+	# determine if we are in debug mode for print statements and sanity checks
+    debugMode = settings.DEBUG
+	
+	# print that this function was called
+    if debugMode == True:
+        print("called: filetree_rename")
+        print(request)
+		
+	# logic for handling request	
+    if request.is_ajax() and request.POST:
+	    # this line allows python to retrive data from ajax
+		# earlier, ajax stored the element from webpage into the single quoted parts of the POST request
+        copied_node_id = request.POST.get('my_jq_tree_copied_node_id')
+        copied_node_type = request.POST.get('my_jq_tree_copied_node_type')
+        parent_node_id = request.POST.get('my_jq_tree_parent_node_id')
+        new_name = request.POST.get('my_jq_tree_new_name')
+		
+		# print data during debug mode before move
+        if debugMode == True:
+            print("copied_node_id: " + copied_node_id)
+            print("copied_node_type: " + copied_node_type)
+            print("parent_node_id: " + parent_node_id)
+            print("new_name: " + new_name)
+			
+		# do the rename
+        source = copied_node_id
+        destination = parent_node_id + os.sep + new_name
+		# this will work for directories as well as files
+        if copied_node_type == 'directory':
+            copy_folder(source, destination)
+        elif copied_node_type == 'file':
+            copy_file(source, destination)
+
+		# this shows python maniuplating the string before sending back to ajax
+        data = 	{
+					'message': "Python copied file: " + source + " with new name: " + new_name,
+                    'new_node_id': destination
+				}
+			
+        return HttpResponse(json.dumps(data), content_type='application/json')
+    else:
+        raise Http404
 		
 		
 # filtree post function for ajax

@@ -17,6 +17,7 @@ urlpatterns = [
 	path('ajax/filetree/delete_node/', ajax.filetree_delete_node, name='filetree_delete_node'),
 	path('ajax/filetree/rename_node/', ajax.filetree_rename_node, name='filetree_rename_node'),
 	path('ajax/filetree/create_node/', ajax.filetree_create_node, name='filetree_create_node'),
+	path('ajax/filetree/copy_node/', ajax.filetree_copy_node, name='filetree_copy_node'),
 ]
 
 # As a final step, create a file inside your catalog folder called urls.py,
