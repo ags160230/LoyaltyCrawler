@@ -161,14 +161,23 @@
               <h6> Time Ended: </h6>
               <h6> Total Duration: </h6>
             </div>
-			<div id="clbk" class="demo"></div>
-			<div id="expand-tree-button" class="btn btn-sm expand-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Expand Tree</div>
-			<div id="evts" class="demo"></div>
-			<div id="collapse-tree-button" class="btn btn-sm collapse-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Collapse Tree</div>
-            <div style="margin: 10px 0px 10px 0px; bottom: 0">
-              <p style="padding: 6px 8px 6px 16px;">Company Information @Copyright 2019</p>
-            </div>
-
+			<!-- Smaller subsection that displays file tree -->
+            <div class="info-box">
+			  <div id="file-tree">
+				<a href="#">File Tree:</a>
+				<!-- Token created in my.ajax.py used for Ajax post methods -->
+				{% csrf_token %}
+				<div id="file-tree-header" class="display-inline">
+					<h6> Root: </h6>
+				</div>
+				<div id="file-tree-text-box" class="display-inline">
+					<!-- my.ajax accesses this class -->
+					<input type="text" class="html-file-tree-root-text-box" name="html-file-tree-root-text-box" value="C:\GitHub\a" selectBoxOptions="C:\GitHub\a;C:\Desktop;" style="font-size: 8pt; margin: 6px 8px 6px 16px; background-color: white; color: black; border-radius: 4px; padding: 2px 4px 2px 8px;">
+				</div>
+				<div id="ajax-filetree-post-operation-expand-tree-button" class="btn btn-sm expand-tree-button" style="margin: 6px 8px 6px 16px; background-color: #26a69a; color: #fff; border-radius: 4px; transition-duration: 0.4s; cursor: pointer;">Expand Tree</div>	
+				<div id="ajax-nested-jqtree"></div>
+			   </div> <!-- end file tree div -->
+			</div> <!-- end file tree info box -->
           </div>
         </div>
       </div>
@@ -182,7 +191,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
     <script src="/static/webapp/js/util.js"></script>
-    
     <!--
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
@@ -219,6 +227,13 @@
     
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     -->
+	<!-- Required for Ajax -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/static/webapp/js/my.ajax.js"></script>
+	<!-- Required for jq tree -->
+	<script type="text/javascript" src="https://mbraak.github.io/jqTree/tree.jquery.js"></script>
+	<script src="/static/webapp/js/my.jqtree.events.js"></script>
+	<!-- Required dtmlgoodies drop down text box -->
 
   </body>
 </html>

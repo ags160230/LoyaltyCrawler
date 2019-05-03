@@ -25,9 +25,24 @@ def move_file(src, dst):
         # display error message
         return False
 		
-#Joe's functions
-#rename_file
-#delete_file
 
+# Function to delete a file from a source location
+def delete_file(src):
+    try:
+        os.remove(src)
+        return True
+    except OSError:
+         # display error message
+        return False
+    
 	
+# Function to rename a file from a source location to a destination location	
+def rename_file(src, dest):
+    try:
+        os.rename(src, dest)
+        return True
+    except OSError:
+         # display error message
+        return False
+   	
 	
